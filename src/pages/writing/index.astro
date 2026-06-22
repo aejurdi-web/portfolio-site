@@ -7,15 +7,33 @@ const entries = (await getCollection('writing', ({ data }) => !data.draft)).sort
 );
 ---
 
-<Layout title="Writing">
-	<main class="mx-auto max-w-2xl px-6 py-24">
-		<h1 class="text-2xl font-semibold">Writing</h1>
-		<ul class="mt-6 space-y-4">
-			{entries.map((entry) => (
-				<li>
-					<a class="text-slate-900 underline" href={`/writing/${entry.id}`}>{entry.data.title}</a>
-				</li>
-			))}
-		</ul>
-	</main>
+<Layout title="Writing — Adam Jurdi">
+	<section class="mx-auto max-w-3xl px-6 py-20">
+		<p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">Writing</p>
+		<h1 class="mt-4 font-display text-4xl font-semibold tracking-tight text-ink">Explainers</h1>
+		<p class="mt-4 max-w-xl text-muted">
+			Semiconductor technology translated into what it means for the investment case.
+		</p>
+
+		{entries.length === 0 ? (
+			<div class="mt-16 border-t border-border pt-10">
+				<p class="font-mono text-xs uppercase tracking-wide text-muted">Nothing published yet</p>
+				<p class="mt-2 text-muted">The first explainer is in progress. Check back soon.</p>
+			</div>
+		) : (
+			<div class="mt-12 border-t border-border">
+				{entries.map((entry) => (
+					<a
+						href={`/writing/${entry.id}`}
+						class="grid grid-cols-[1fr_6rem] items-baseline gap-4 border-b border-border py-4 transition-colors hover:bg-ink/[0.03]"
+					>
+						<span class="font-display text-base text-ink">{entry.data.title}</span>
+						<span class="font-mono text-xs text-muted">
+							{entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+						</span>
+					</a>
+				))}
+			</div>
+		)}
+	</section>
 </Layout>

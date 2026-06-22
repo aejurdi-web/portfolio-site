@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import WaferMap from './WaferMap';
 
 type YieldModel = 'poisson' | 'murphy' | 'seeds';
 
@@ -212,6 +213,13 @@ export default function YieldCalculator() {
 						<dd className="mt-1 font-mono text-xl text-ink">{formatCurrency(costPerGoodDie)}</dd>
 					</div>
 				</dl>
+			</div>
+
+			<div className="border border-border bg-surface p-6 lg:col-span-2">
+				<p className="font-mono text-xs uppercase tracking-wide text-muted">Wafer Map</p>
+				<div className="mt-6">
+					<WaferMap waferDiameterMm={waferDiameter} dieAreaMm2={dieArea} yieldFraction={yieldPct} />
+				</div>
 			</div>
 		</div>
 	);

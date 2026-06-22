@@ -6,8 +6,8 @@ const WAFER_DIAMETERS = [200, 300] as const;
 type WaferDiameter = (typeof WAFER_DIAMETERS)[number];
 
 const DEFAULT_WAFER_COST: Record<WaferDiameter, number> = {
-	200: 1500,
-	300: 5000,
+	200: 3500,
+	300: 17000,
 };
 
 const YIELD_MODEL_LABELS: Record<YieldModel, string> = {
@@ -167,6 +167,9 @@ export default function YieldCalculator() {
 							/>
 						</div>
 					</div>
+					<p className="mt-2 font-mono text-[0.65rem] leading-snug text-muted">
+						Illustrative estimate ({waferDiameter}mm, {waferDiameter === 300 ? '5nm-class' : 'mature node'}) — override with your own figure.
+					</p>
 				</div>
 
 				<div>

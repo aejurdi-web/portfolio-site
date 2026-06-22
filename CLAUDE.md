@@ -2,10 +2,11 @@
 
 ## Purpose
 
-This site demonstrates finance + semiconductor technical expertise for equity
-research / investment banking recruiting. It is a **credibility artifact**,
-not a traffic play — optimize for "would a PM or MD reading this be
-impressed," not pageviews, SEO, or growth mechanics.
+This site demonstrates finance and technology expertise for equity research
+and investment banking recruiting. Scope: technology companies broadly,
+currently focused on semiconductors. It is a **credibility artifact**, not a
+traffic play: optimize for "would a PM or MD reading this be impressed," not
+pageviews, SEO, or growth mechanics.
 
 ## Three Pillars
 

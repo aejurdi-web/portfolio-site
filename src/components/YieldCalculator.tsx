@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import WaferMap from './WaferMap';
-
-type YieldModel = 'poisson' | 'murphy' | 'seeds';
+import YieldCurveChart from './YieldCurveChart';
+import { diesPerWafer, yieldFraction, type YieldModel } from '../lib/yieldMath';
 
 const WAFER_DIAMETERS = [200, 300] as const;
 type WaferDiameter = (typeof WAFER_DIAMETERS)[number];
@@ -16,26 +16,6 @@ const YIELD_MODEL_LABELS: Record<YieldModel, string> = {
 	murphy: 'Murphy',
 	seeds: 'Seeds',
 };
-
-function diesPerWafer(diameterMm: number, dieAreaMm2: number) {
-	const r = diameterMm / 2;
-	const dpw = (Math.PI * r * r) / dieAreaMm2 - (Math.PI * diameterMm) / Math.sqrt(2 * dieAreaMm2);
-	return Math.max(dpw, 0);
-}
-
-function yieldFraction(model: YieldModel, dieAreaMm2: number, defectDensityPerCm2: number) {
-	const dieAreaCm2 = dieAreaMm2 / 100;
-	const ad0 = dieAreaCm2 * defectDensityPerCm2;
-
-	switch (model) {
-		case 'poisson':
-			return Math.exp(-ad0);
-		case 'murphy':
-			return ad0 === 0 ? 1 : ((1 - Math.exp(-ad0)) / ad0) ** 2;
-		case 'seeds':
-			return Math.exp(-Math.sqrt(ad0));
-	}
-}
 
 function formatCurrency(value: number) {
 	if (!Number.isFinite(value)) return '—';
@@ -265,6 +245,15 @@ export default function YieldCalculator() {
 						<dd className="mt-1 font-mono text-xl text-ink">{formatCurrency(costPerGoodDie)}</dd>
 					</div>
 				</dl>
+			</div>
+
+			<div className="border border-border bg-surface p-6 lg:col-span-2">
+				<p className="font-mono text-xs uppercase tracking-wide text-muted">
+					Yield vs. Die Area ({YIELD_MODEL_LABELS[model]})
+				</p>
+				<div className="mt-6">
+					<YieldCurveChart model={model} defectDensityPerCm2={defectDensity} currentDieAreaMm2={dieArea} />
+				</div>
 			</div>
 
 			<div className="border border-border bg-surface p-6 lg:col-span-2">

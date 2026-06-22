@@ -47,6 +47,8 @@ function formatCurrency(value: number) {
 	});
 }
 
+const RETICLE_LIMIT_MM2 = 858;
+
 interface SliderFieldProps {
 	label: string;
 	unit: string;
@@ -98,10 +100,41 @@ export default function YieldCalculator() {
 	const [waferCost, setWaferCost] = useState(DEFAULT_WAFER_COST[300]);
 	const [model, setModel] = useState<YieldModel>('murphy');
 
+	const [compareMode, setCompareMode] = useState(false);
+	const [totalLogicArea, setTotalLogicArea] = useState(600);
+	const [numChiplets, setNumChiplets] = useState(4);
+	const [interfaceOverheadPct, setInterfaceOverheadPct] = useState(8);
+	const [kgdCost, setKgdCost] = useState(3);
+	const [packagingCost, setPackagingCost] = useState(80);
+	const [assemblyYieldPct, setAssemblyYieldPct] = useState(97);
+
 	const dpw = useMemo(() => diesPerWafer(waferDiameter, dieArea), [waferDiameter, dieArea]);
 	const yieldPct = useMemo(() => yieldFraction(model, dieArea, defectDensity), [model, dieArea, defectDensity]);
 	const goodDies = dpw * yieldPct;
 	const costPerGoodDie = goodDies > 0 ? waferCost / goodDies : Infinity;
+
+	const monoExceedsReticle = totalLogicArea > RETICLE_LIMIT_MM2;
+	const monoDpw = useMemo(() => diesPerWafer(waferDiameter, totalLogicArea), [waferDiameter, totalLogicArea]);
+	const monoYieldPct = useMemo(
+		() => yieldFraction(model, totalLogicArea, defectDensity),
+		[model, totalLogicArea, defectDensity]
+	);
+	const monoGoodDies = monoDpw * monoYieldPct;
+	const monoCostPerGoodDie = monoExceedsReticle || monoGoodDies <= 0 ? Infinity : waferCost / monoGoodDies;
+
+	const chipletArea = (totalLogicArea / numChiplets) * (1 + interfaceOverheadPct / 100);
+	const chipletDpw = useMemo(() => diesPerWafer(waferDiameter, chipletArea), [waferDiameter, chipletArea]);
+	const chipletYieldPct = useMemo(
+		() => yieldFraction(model, chipletArea, defectDensity),
+		[model, chipletArea, defectDensity]
+	);
+	const chipletGoodDies = chipletDpw * chipletYieldPct;
+	const costPerGoodChiplet = chipletGoodDies > 0 ? waferCost / chipletGoodDies : Infinity;
+	const totalChipletCost =
+		(numChiplets * costPerGoodChiplet + numChiplets * kgdCost + packagingCost) / (assemblyYieldPct / 100);
+
+	const chipletWins = monoExceedsReticle || totalChipletCost < monoCostPerGoodDie;
+	const compareDiff = Math.abs(monoCostPerGoodDie - totalChipletCost);
 
 	function handleWaferDiameterChange(next: WaferDiameter) {
 		setWaferDiameter(next);
@@ -109,6 +142,25 @@ export default function YieldCalculator() {
 	}
 
 	return (
+		<>
+		<div className="mb-10 flex items-center justify-between gap-4 border-b border-border pb-6">
+			<div>
+				<p className="font-mono text-xs uppercase tracking-wide text-muted">Mode</p>
+				<p className="mt-1 text-sm text-ink">Compare: Monolithic vs. Chiplet</p>
+			</div>
+			<button
+				type="button"
+				role="switch"
+				aria-checked={compareMode}
+				onClick={() => setCompareMode((v) => !v)}
+				className={`border px-4 py-2 font-mono text-xs uppercase tracking-wide transition-colors ${
+					compareMode ? 'border-accent bg-accent/10 text-accent' : 'border-border text-muted hover:text-ink'
+				}`}
+			>
+				{compareMode ? 'On' : 'Off'}
+			</button>
+		</div>
+
 		<div className="grid gap-10 lg:grid-cols-[1fr_1fr]">
 			<div className="space-y-8">
 				<SliderField
@@ -222,5 +274,165 @@ export default function YieldCalculator() {
 				</div>
 			</div>
 		</div>
+
+		{compareMode && (
+			<div className="mt-12 border-t border-border pt-10">
+				<p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Compare</p>
+				<h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+					Monolithic vs. Chiplet
+				</h2>
+
+				<div className="mt-8 grid gap-10 lg:grid-cols-[1fr_1fr]">
+					<div className="space-y-8">
+						<SliderField
+							label="Total Logic Area Target"
+							unit="mm²"
+							value={totalLogicArea}
+							min={10}
+							max={2000}
+							step={10}
+							onChange={setTotalLogicArea}
+						/>
+						<SliderField
+							label="Number of Chiplets (N)"
+							unit="chiplets"
+							value={numChiplets}
+							min={2}
+							max={8}
+							step={1}
+							onChange={setNumChiplets}
+						/>
+						<SliderField
+							label="Interface Overhead per Chiplet"
+							unit="%"
+							value={interfaceOverheadPct}
+							min={0}
+							max={30}
+							step={0.5}
+							onChange={setInterfaceOverheadPct}
+						/>
+						<SliderField
+							label="Assembly Yield"
+							unit="%"
+							value={assemblyYieldPct}
+							min={80}
+							max={100}
+							step={0.5}
+							onChange={setAssemblyYieldPct}
+						/>
+
+						<div className="flex items-baseline justify-between">
+							<label className="font-mono text-xs uppercase tracking-wide text-muted">KGD Test Cost / Die</label>
+							<div className="flex items-baseline gap-1.5">
+								<span className="font-mono text-xs text-muted">$</span>
+								<input
+									type="number"
+									className="w-20 border border-border bg-bg px-2 py-1 text-right font-mono text-sm text-ink focus:border-accent focus:outline-none"
+									value={kgdCost}
+									min={0}
+									step={0.5}
+									onChange={(e) => {
+										const next = Number(e.target.value);
+										if (Number.isFinite(next)) setKgdCost(Math.max(0, next));
+									}}
+								/>
+							</div>
+						</div>
+
+						<div className="flex items-baseline justify-between">
+							<label className="font-mono text-xs uppercase tracking-wide text-muted">
+								Packaging / Assembly Fixed Cost
+							</label>
+							<div className="flex items-baseline gap-1.5">
+								<span className="font-mono text-xs text-muted">$</span>
+								<input
+									type="number"
+									className="w-20 border border-border bg-bg px-2 py-1 text-right font-mono text-sm text-ink focus:border-accent focus:outline-none"
+									value={packagingCost}
+									min={0}
+									step={5}
+									onChange={(e) => {
+										const next = Number(e.target.value);
+										if (Number.isFinite(next)) setPackagingCost(Math.max(0, next));
+									}}
+								/>
+							</div>
+						</div>
+					</div>
+
+					<div className="space-y-6">
+						{monoExceedsReticle && (
+							<div className="border-2 border-accent bg-accent/5 p-4">
+								<p className="font-mono text-xs uppercase tracking-wide text-accent">Manufacturing Constraint</p>
+								<p className="mt-2 text-sm text-ink">
+									{totalLogicArea}mm² exceeds the ~858mm² reticle limit (TSMC's max single-exposure field). A
+									monolithic die at this size isn't just more expensive — it's physically impossible to print
+									in one exposure, regardless of cost.
+								</p>
+							</div>
+						)}
+
+						<div className="grid grid-cols-2 gap-4">
+							<div
+								className={`border p-4 ${
+									!chipletWins ? 'border-accent bg-accent/5' : 'border-border bg-surface'
+								}`}
+							>
+								<p className="font-mono text-xs uppercase tracking-wide text-muted">Monolithic</p>
+								<p className="mt-3 font-mono text-2xl text-ink">
+									{monoExceedsReticle ? 'N/A' : formatCurrency(monoCostPerGoodDie)}
+								</p>
+								<p className="mt-1 font-mono text-[0.65rem] text-muted">per good finished chip</p>
+								<dl className="mt-4 space-y-1 font-mono text-[0.65rem] text-muted">
+									<div className="flex justify-between">
+										<dt>Die area</dt>
+										<dd className="text-ink">{totalLogicArea}mm²</dd>
+									</div>
+									<div className="flex justify-between">
+										<dt>Yield</dt>
+										<dd className="text-ink">{monoExceedsReticle ? '—' : `${(monoYieldPct * 100).toFixed(1)}%`}</dd>
+									</div>
+								</dl>
+							</div>
+
+							<div
+								className={`border p-4 ${chipletWins ? 'border-accent bg-accent/5' : 'border-border bg-surface'}`}
+							>
+								<p className="font-mono text-xs uppercase tracking-wide text-muted">Chiplet</p>
+								<p className="mt-3 font-mono text-2xl text-ink">{formatCurrency(totalChipletCost)}</p>
+								<p className="mt-1 font-mono text-[0.65rem] text-muted">per good finished package</p>
+								<dl className="mt-4 space-y-1 font-mono text-[0.65rem] text-muted">
+									<div className="flex justify-between">
+										<dt>Chiplet area</dt>
+										<dd className="text-ink">{chipletArea.toFixed(1)}mm²</dd>
+									</div>
+									<div className="flex justify-between">
+										<dt>Yield / chiplet</dt>
+										<dd className="text-ink">{(chipletYieldPct * 100).toFixed(1)}%</dd>
+									</div>
+								</dl>
+							</div>
+						</div>
+
+						<div className="border border-border bg-surface p-4 text-center">
+							<p className="font-mono text-sm text-ink">
+								{monoExceedsReticle ? (
+									<>
+										<span className="text-accent">Chiplet</span> wins — monolithic is not manufacturable at this
+										die size.
+									</>
+								) : (
+									<>
+										<span className="text-accent">{chipletWins ? 'Chiplet' : 'Monolithic'}</span> wins by{' '}
+										<span className="text-accent">{formatCurrency(compareDiff)}</span> per unit.
+									</>
+								)}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		)}
+		</>
 	);
 }

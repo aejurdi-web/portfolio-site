@@ -1,0 +1,55 @@
+---
+// Decorative die grid — an abstract yield map. Foreshadows the real
+// wafer map in the Phase 2 calculator.
+interface Props {
+  class?: string;
+  rows?: number;
+  cols?: number;
+}
+
+const { class: className = '', rows = 7, cols = 14 } = Astro.props;
+const total = rows * cols;
+const activeIndices = new Set([
+  3, 17, 18, 19, 24, 32, 33, 38, 47, 48, 49, 52, 61, 62, 66, 76, 80, 90, 91,
+]);
+---
+
+<div
+	class:list={['grid gap-[3px]', className]}
+	style={`grid-template-columns: repeat(${cols}, minmax(0, 1fr));`}
+>
+	{Array.from({ length: total }).map((_, i) => (
+		<div
+			class:list={[
+				'wafer-cell aspect-square rounded-[1px]',
+				activeIndices.has(i) ? 'bg-copper' : 'bg-hairline',
+			]}
+			style={`animation-delay: ${i * 12}ms`}
+		/>
+	))}
+</div>
+
+<style>
+	.wafer-cell {
+		opacity: 0;
+		animation: wafer-fade 0.4s ease-out forwards;
+	}
+
+	@keyframes wafer-fade {
+		from {
+			opacity: 0;
+			transform: scale(0.6);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.wafer-cell {
+			animation: none;
+			opacity: 1;
+		}
+	}
+</style>

@@ -1,0 +1,22 @@
+---
+// Placeholder hrefs — replace with real profile/contact links.
+const links = [
+  { label: 'LinkedIn', href: '#' },
+  { label: 'Email', href: 'mailto:adammjurdi@gmail.com' },
+  { label: 'Resume', href: '/resume.pdf' },
+  { label: 'GitHub', href: '#' },
+];
+---
+
+<footer class="border-t border-hairline">
+	<div
+		class="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-8 font-mono text-xs uppercase tracking-wide text-slate sm:flex-row sm:items-center sm:justify-between"
+	>
+		<p>&copy; {new Date().getFullYear()} Adam Jurdi</p>
+		<nav class="flex gap-6">
+			{links.map((link) => (
+				<a href={link.href} class="transition-colors hover:text-copper">{link.label}</a>
+			))}
+		</nav>
+	</div>
+</footer>

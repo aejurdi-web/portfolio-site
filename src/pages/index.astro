@@ -1,10 +1,89 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import WaferGrid from '../components/WaferGrid.astro';
+
+const pillars = [
+  {
+    eyebrow: 'Written theses',
+    title: 'Research',
+    description: "Equity theses on semiconductor companies, written the way I'd want to read them.",
+    href: '/research',
+  },
+  {
+    eyebrow: 'Interactive tool',
+    title: 'Yield / Chiplet Economics Calculator',
+    description: 'Model die yield and chiplet economics against a visual wafer map.',
+    href: '/tools/yield',
+  },
+  {
+    eyebrow: 'Explainers',
+    title: 'Writing',
+    description: 'Semiconductor technology translated into what it means for the investment case.',
+    href: '/writing',
+  },
+];
 ---
 
-<Layout title="Portfolio">
-	<main class="mx-auto max-w-2xl px-6 py-24">
-		<h1 class="text-2xl font-semibold">Portfolio site — under construction.</h1>
-		<p class="mt-2 text-slate-500">Deploy pipeline check. Real content lands in Phase 1.</p>
-	</main>
+<Layout title="Adam Jurdi — Equity Research, Semiconductors">
+	<section class="mx-auto max-w-5xl px-6 py-20 lg:py-28">
+		<div class="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+			<div>
+				<p class="font-mono text-xs uppercase tracking-[0.2em] text-copper">
+					Equity Research — Semiconductors
+				</p>
+				<h1 class="mt-4 font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl">
+					Adam Jurdi
+				</h1>
+				<p class="mt-6 max-w-md text-lg text-slate">
+					Equity research built from the wafer up — translating process nodes, packaging, and
+					yield economics into the assumptions that move semiconductor stocks.
+				</p>
+				<div class="mt-8 flex flex-wrap gap-3 font-mono text-xs uppercase tracking-wide text-slate">
+					<span class="rounded-full border border-hairline px-3 py-1">Coverage: Semiconductors</span>
+					<span class="rounded-full border border-hairline px-3 py-1">Focus: Equity Research</span>
+				</div>
+			</div>
+			<WaferGrid class="w-full" />
+		</div>
+	</section>
+
+	<section class="border-t border-hairline">
+		<div class="mx-auto max-w-5xl px-6 py-16">
+			<div class="grid overflow-hidden rounded-lg border border-hairline sm:grid-cols-3">
+				{pillars.map((pillar, i) => (
+					<a
+						href={pillar.href}
+						class:list={[
+							'group p-8 transition-colors hover:bg-ink/[0.02]',
+							i > 0 && 'border-t border-hairline sm:border-l sm:border-t-0',
+						]}
+					>
+						<p class="font-mono text-xs uppercase tracking-wide text-copper">{pillar.eyebrow}</p>
+						<h2 class="mt-3 font-display text-xl font-semibold tracking-tight text-ink">
+							{pillar.title}
+						</h2>
+						<p class="mt-3 text-sm text-slate">{pillar.description}</p>
+						<p class="mt-6 font-mono text-xs uppercase tracking-wide text-ink">
+							View
+							<span class="inline-block transition-transform group-hover:translate-x-1">→</span>
+						</p>
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-navy text-paper">
+		<div class="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-12 sm:flex-row sm:items-center sm:justify-between">
+			<p class="max-w-xl text-base italic text-paper/80">
+				[Background and what draws you to semiconductor equity research — 2–3 sentences.]
+			</p>
+			<a
+				href="/about"
+				class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wide text-copper transition-colors hover:text-paper"
+			>
+				More about me <span aria-hidden="true">→</span>
+			</a>
+		</div>
+	</section>
 </Layout>

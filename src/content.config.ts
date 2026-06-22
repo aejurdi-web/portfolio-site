@@ -8,6 +8,9 @@ const research = defineCollection({
     description: z.string(),
     date: z.coerce.date(),
     ticker: z.string().optional(),
+    sector: z.string().optional(),
+    rating: z.string().optional(),
+    priceTarget: z.string().optional(),
     draft: z.boolean().default(true),
   }),
 });

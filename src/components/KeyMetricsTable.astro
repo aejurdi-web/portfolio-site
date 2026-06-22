@@ -1,0 +1,47 @@
+---
+interface Metric {
+	label: string;
+	value: string;
+}
+
+interface Props {
+	metrics: Metric[];
+}
+
+const { metrics } = Astro.props as Props;
+
+function splitValue(value: string) {
+	const match = value.match(/^(.*?)\s*\((.+)\)$/);
+	if (!match) return { primary: value, detail: null };
+	return { primary: match[1], detail: match[2] };
+}
+---
+
+<div class="my-8 overflow-x-auto border border-border not-prose">
+	<table class="w-full min-w-[28rem] border-collapse text-sm">
+		<thead>
+			<tr class="bg-surface">
+				<th class="border-b border-border px-4 py-3 text-left font-mono text-xs uppercase tracking-wide text-muted">
+					Metric
+				</th>
+				<th class="border-b border-border px-4 py-3 text-right font-mono text-xs uppercase tracking-wide text-muted">
+					Value
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{metrics.map(({ label, value }) => {
+				const { primary, detail } = splitValue(value);
+				return (
+					<tr class="border-b border-border transition-colors last:border-b-0 hover:bg-ink/[0.03]">
+						<td class="px-4 py-3 text-ink">{label}</td>
+						<td class="px-4 py-3 text-right font-mono text-ink">
+							{primary}
+							{detail && <span class="ml-1.5 text-muted">({detail})</span>}
+						</td>
+					</tr>
+				);
+			})}
+		</tbody>
+	</table>
+</div>

@@ -1,0 +1,50 @@
+---
+interface ValuationRow {
+	method: string;
+	assumptions: string;
+	low: string;
+	high: string;
+	mid: string;
+}
+
+interface Props {
+	rows: ValuationRow[];
+}
+
+const { rows } = Astro.props as Props;
+---
+
+<div class="my-8 overflow-x-auto border border-border not-prose">
+	<table class="w-full min-w-[34rem] border-collapse text-sm">
+		<thead>
+			<tr class="bg-surface">
+				<th class="border-b border-border px-4 py-3 text-left font-mono text-xs uppercase tracking-wide text-muted">
+					Method
+				</th>
+				<th class="border-b border-border px-4 py-3 text-left font-mono text-xs uppercase tracking-wide text-muted">
+					Assumptions
+				</th>
+				<th class="border-b border-border px-4 py-3 text-right font-mono text-xs uppercase tracking-wide text-muted">
+					Low
+				</th>
+				<th class="border-b border-border px-4 py-3 text-right font-mono text-xs uppercase tracking-wide text-muted">
+					High
+				</th>
+				<th class="border-b border-border px-4 py-3 text-right font-mono text-xs uppercase tracking-wide text-muted">
+					Mid
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{rows.map(({ method, assumptions, low, high, mid }) => (
+				<tr class="border-b border-border transition-colors last:border-b-0 hover:bg-ink/[0.03]">
+					<td class="px-4 py-3 text-ink">{method}</td>
+					<td class="px-4 py-3 font-mono text-xs text-muted">{assumptions}</td>
+					<td class="px-4 py-3 text-right font-mono text-ink">{low}</td>
+					<td class="px-4 py-3 text-right font-mono text-ink">{high}</td>
+					<td class="px-4 py-3 text-right font-mono font-semibold text-accent">{mid}</td>
+				</tr>
+			))}
+		</tbody>
+	</table>
+</div>

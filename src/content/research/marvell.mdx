@@ -9,9 +9,24 @@ priceTarget: '$130 initial, surpassed'
 draft: false
 ---
 
+import KeyMetricsTable from '../../components/KeyMetricsTable.astro';
+import ValuationTable from '../../components/ValuationTable.astro';
+
 ## Thesis
 
 Marvell was caught in a macro discount, not a comps discount. At 9.4x EV/NTM revenue against a peer median of 10.5x, the stock was pricing in two-plus years for Marvell to grow into a $120-150B valuation, despite guiding to 30% revenue growth in FY2027E. Revenue had already jumped 42% year over year, EBITDA margins were expanding from 32% toward 37% by FY2030E, and unlevered free cash flow was set to grow from roughly $1.3B to over $8B across the projection window. None of that was speculative. It was sitting in reported results and conservative forward assumptions, and the market was pricing the macro environment, not the business.
+
+## Key Model Outputs
+
+<KeyMetricsTable metrics={[
+	{ label: 'FY2027E Revenue', value: '$10.7B (+30% YoY)' },
+	{ label: 'FY2027E EBITDA', value: '$3.6B (34% margin)' },
+	{ label: 'FY2027E UFCF', value: '$3.5B (32% margin)' },
+	{ label: 'WACC', value: '15.1% (Beta: 1.99)' },
+	{ label: 'EV / NTM Revenue', value: '9.4x (Peer: 10.5x)' },
+	{ label: 'EV / EBITDA (LTM)', value: '36.5x (Peer: 37.3x)' },
+	{ label: 'Net Debt (FY2026A)', value: '$1.8B' },
+]} />
 
 ## Custom Silicon, Not Commodity Exposure
 
@@ -19,14 +34,19 @@ Marvell's AI exposure isn't a rising-tide story. It co-designs custom XPUs and A
 
 The clearest external validation arrived when NVIDIA announced a $2B strategic investment in Marvell, paired with a partnership connecting Marvell's custom XPUs and silicon photonics into the NVLink Fusion ecosystem. It also opened two monetization vectors not yet reflected in consensus: AI-RAN/5G infrastructure and optical interconnect.
 
-## Valuation
+## Valuation Summary
 
-Three methods converged on the same conclusion:
+<ValuationTable rows={[
+	{ method: 'DCF, Base Case', assumptions: 'WACC 9.5%, TGR 3.0%', low: '$81', high: '$109', mid: '$100' },
+	{ method: 'DCF, Bull Case', assumptions: 'WACC 8.5%, TGR 3.5%', low: '$118', high: '$143', mid: '$130' },
+	{ method: 'DCF, Bear Case', assumptions: 'WACC 11.5%, TGR 2.0%', low: '$65', high: '$73', mid: '$69' },
+	{ method: 'EV/Revenue Comps', assumptions: '8.0x to 12.0x FY26E Rev', low: '$72', high: '$150', mid: '$116' },
+	{ method: 'EV/EBITDA Comps', assumptions: '22x to 30x FY26E EBITDA', low: '$81', high: '$136', mid: '$110' },
+	{ method: 'Sum-of-the-Parts', assumptions: 'Segment EV/EBITDA', low: '$105', high: '$157', mid: '$131' },
+	{ method: '52-Week Range', assumptions: 'Market price', low: '$47', high: '$103', mid: '$75' },
+]} />
 
-- **DCF:** ~$127, 9.5% WACC, 3% terminal growth rate
-- **Trading comps:** $104-$120, peer median multiples
-- **Sum-of-the-parts:** $131, segment-level EV/EBITDA (AI/Data Center at 28x, Carrier at 18x)
-- **Blended price target: $130**, ~33% upside from the $97.88 entry price
+Blended price target: **$130**, ~33% upside from the $97.88 entry price.
 
 ## Catalysts
 

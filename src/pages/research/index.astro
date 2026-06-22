@@ -9,33 +9,33 @@ const entries = (await getCollection('research', ({ data }) => !data.draft)).sor
 
 <Layout title="Research — Adam Jurdi">
 	<section class="mx-auto max-w-3xl px-6 py-20">
-		<p class="font-mono text-xs uppercase tracking-[0.2em] text-copper">Research</p>
+		<p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">Research</p>
 		<h1 class="mt-4 font-display text-4xl font-semibold tracking-tight text-ink">
 			Written equity theses
 		</h1>
-		<p class="mt-4 max-w-xl text-slate">
+		<p class="mt-4 max-w-xl text-muted">
 			Full-length theses on semiconductor companies — coverage initiations, updates, and the
 			assumptions behind each call.
 		</p>
 
 		{entries.length === 0 ? (
-			<div class="mt-16 border-t border-hairline pt-10">
-				<p class="font-mono text-xs uppercase tracking-wide text-slate">No published coverage yet</p>
-				<p class="mt-2 text-slate">The first thesis is in progress. Check back soon.</p>
+			<div class="mt-16 border-t border-border pt-10">
+				<p class="font-mono text-xs uppercase tracking-wide text-muted">No published coverage yet</p>
+				<p class="mt-2 text-muted">The first thesis is in progress. Check back soon.</p>
 			</div>
 		) : (
-			<div class="mt-12 border-t border-hairline">
+			<div class="mt-12 border-t border-border">
 				{entries.map((entry) => (
 					<a
 						href={`/research/${entry.id}`}
-						class="grid grid-cols-[5rem_1fr_6rem] items-baseline gap-4 border-b border-hairline py-4 transition-colors hover:bg-ink/[0.02] sm:grid-cols-[5rem_1fr_8rem_6rem]"
+						class="grid grid-cols-[5rem_1fr_6rem] items-baseline gap-4 border-b border-border py-4 transition-colors hover:bg-ink/[0.03] sm:grid-cols-[5rem_1fr_8rem_6rem]"
 					>
-						<span class="font-mono text-xs text-slate">{entry.data.ticker ?? '—'}</span>
+						<span class="font-mono text-xs text-muted">{entry.data.ticker ?? '—'}</span>
 						<span class="font-display text-base text-ink">{entry.data.title}</span>
-						<span class="hidden font-mono text-xs uppercase tracking-wide text-slate sm:block">
+						<span class="hidden font-mono text-xs uppercase tracking-wide text-muted sm:block">
 							{entry.data.sector ?? ''}
 						</span>
-						<span class="font-mono text-xs text-slate">
+						<span class="font-mono text-xs text-muted">
 							{entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
 						</span>
 					</a>

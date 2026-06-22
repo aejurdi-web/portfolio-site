@@ -28,41 +28,41 @@ const pillars = [
 	<section class="mx-auto max-w-5xl px-6 py-20 lg:py-28">
 		<div class="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
 			<div>
-				<p class="font-mono text-xs uppercase tracking-[0.2em] text-copper">
+				<p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">
 					Equity Research — Semiconductors
 				</p>
 				<h1 class="mt-4 font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl">
 					Adam Jurdi
 				</h1>
-				<p class="mt-6 max-w-md text-lg text-slate">
+				<p class="mt-6 max-w-md text-lg text-muted">
 					Equity research built from the wafer up — translating process nodes, packaging, and
 					yield economics into the assumptions that move semiconductor stocks.
 				</p>
-				<div class="mt-8 flex flex-wrap gap-3 font-mono text-xs uppercase tracking-wide text-slate">
-					<span class="rounded-full border border-hairline px-3 py-1">Coverage: Semiconductors</span>
-					<span class="rounded-full border border-hairline px-3 py-1">Focus: Equity Research</span>
+				<div class="mt-8 flex flex-wrap gap-3 font-mono text-xs uppercase tracking-wide text-muted">
+					<span class="rounded-full border border-border px-3 py-1">Coverage: Semiconductors</span>
+					<span class="rounded-full border border-border px-3 py-1">Focus: Equity Research</span>
 				</div>
 			</div>
 			<WaferGrid class="w-full" />
 		</div>
 	</section>
 
-	<section class="border-t border-hairline">
+	<section class="border-t border-border">
 		<div class="mx-auto max-w-5xl px-6 py-16">
-			<div class="grid overflow-hidden rounded-lg border border-hairline sm:grid-cols-3">
+			<div class="grid overflow-hidden rounded-lg border border-border bg-surface sm:grid-cols-3">
 				{pillars.map((pillar, i) => (
 					<a
 						href={pillar.href}
 						class:list={[
-							'group p-8 transition-colors hover:bg-ink/[0.02]',
-							i > 0 && 'border-t border-hairline sm:border-l sm:border-t-0',
+							'group p-8 transition-colors hover:bg-ink/[0.03]',
+							i > 0 && 'border-t border-border sm:border-l sm:border-t-0',
 						]}
 					>
-						<p class="font-mono text-xs uppercase tracking-wide text-copper">{pillar.eyebrow}</p>
+						<p class="font-mono text-xs uppercase tracking-wide text-accent">{pillar.eyebrow}</p>
 						<h2 class="mt-3 font-display text-xl font-semibold tracking-tight text-ink">
 							{pillar.title}
 						</h2>
-						<p class="mt-3 text-sm text-slate">{pillar.description}</p>
+						<p class="mt-3 text-sm text-muted">{pillar.description}</p>
 						<p class="mt-6 font-mono text-xs uppercase tracking-wide text-ink">
 							View
 							<span class="inline-block transition-transform group-hover:translate-x-1">→</span>
@@ -73,14 +73,14 @@ const pillars = [
 		</div>
 	</section>
 
-	<section class="bg-navy text-paper">
+	<section class="bg-band text-ink">
 		<div class="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-12 sm:flex-row sm:items-center sm:justify-between">
-			<p class="max-w-xl text-base italic text-paper/80">
+			<p class="max-w-xl text-base italic text-ink/80">
 				[Background and what draws you to semiconductor equity research — 2–3 sentences.]
 			</p>
 			<a
 				href="/about"
-				class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wide text-copper transition-colors hover:text-paper"
+				class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wide text-accent transition-colors hover:text-ink"
 			>
 				More about me <span aria-hidden="true">→</span>
 			</a>

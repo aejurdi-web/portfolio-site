@@ -7,14 +7,14 @@ const navItems = [
 ];
 ---
 
-<header class="border-b border-hairline">
+<header class="border-b border-border bg-surface">
 	<div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
 		<a href="/" class="font-display text-lg font-semibold tracking-tight text-ink">
 			Adam Jurdi
 		</a>
-		<nav class="flex gap-6 font-mono text-xs uppercase tracking-wide text-slate">
+		<nav class="flex gap-6 font-mono text-xs uppercase tracking-wide text-muted">
 			{navItems.map((item) => (
-				<a href={item.href} class="transition-colors hover:text-copper">{item.label}</a>
+				<a href={item.href} class="transition-colors hover:text-accent">{item.label}</a>
 			))}
 		</nav>
 	</div>

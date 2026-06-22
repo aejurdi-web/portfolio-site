@@ -32,6 +32,20 @@ big animated landing sections, SaaS-marketing tone). When in doubt, use the
 `frontend-design` skill for aesthetic decisions and lean toward
 under-designed and credible over over-designed and trendy.
 
+**Dark theme** is the current direction — a near-black base with a layered
+surface for header/footer/cards, blue as the single accent (replacing the
+earlier copper), and a richer dark-blue band reserved for the homepage's
+inverted "about" section so it still reads as a distinct beat against the
+base background. Color tokens live in `src/styles/global.css`:
+
+- `bg` (#11141A) — page background
+- `surface` (#181C24) — header, footer, card surfaces
+- `band` (#1C2A4D) — the homepage inverted section only
+- `border` (#2A2F3A) — hairlines/dividers
+- `ink` (#ECEEF1) — primary text
+- `muted` (#8B93A1) — secondary text
+- `accent` (#5B8DEF) — the one accent color; spend it deliberately
+
 ## Build Phases
 
 - **Phase 0** — Scaffold + deploy pipeline. Get Astro project building and

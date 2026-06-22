@@ -17,15 +17,15 @@ const { title, ticker, sector, rating, priceTarget, date } = entry.data;
 
 <Layout title={`${title} — Adam Jurdi`}>
 	<article class="mx-auto max-w-3xl px-6 py-20">
-		<a href="/research" class="font-mono text-xs uppercase tracking-wide text-slate hover:text-copper">
+		<a href="/research" class="font-mono text-xs uppercase tracking-wide text-muted hover:text-accent">
 			&larr; Research
 		</a>
 
-		<header class="mt-6 border-b border-hairline pb-8">
-			<p class="font-mono text-xs uppercase tracking-[0.2em] text-copper">{ticker ?? 'Equity Research'}</p>
+		<header class="mt-6 border-b border-border pb-8">
+			<p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">{ticker ?? 'Equity Research'}</p>
 			<h1 class="mt-3 font-display text-4xl font-semibold tracking-tight text-ink">{title}</h1>
 
-			<dl class="mt-6 grid grid-cols-2 gap-4 font-mono text-xs uppercase tracking-wide text-slate sm:grid-cols-4">
+			<dl class="mt-6 grid grid-cols-2 gap-4 font-mono text-xs uppercase tracking-wide text-muted sm:grid-cols-4">
 				{sector && (
 					<div>
 						<dt>Sector</dt>
@@ -53,7 +53,7 @@ const { title, ticker, sector, rating, priceTarget, date } = entry.data;
 			</dl>
 		</header>
 
-		<div class="prose prose-slate mt-10 max-w-none prose-headings:font-display prose-headings:tracking-tight">
+		<div class="prose prose-invert mt-10 max-w-none prose-headings:font-display prose-headings:tracking-tight">
 			<Content />
 		</div>
 	</article>

@@ -2,12 +2,13 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-paper: #fafaf8;
-  --color-ink: #14181d;
-  --color-navy: #1f3358;
-  --color-copper: #b5652d;
-  --color-slate: #5b6472;
-  --color-hairline: #dadfe3;
+  --color-bg: #11141a;
+  --color-surface: #181c24;
+  --color-band: #1c2a4d;
+  --color-border: #2a2f3a;
+  --color-ink: #eceef1;
+  --color-muted: #8b93a1;
+  --color-accent: #5b8def;
 
   --font-display: "Space Grotesk", sans-serif;
   --font-body: "IBM Plex Sans", sans-serif;

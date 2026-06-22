@@ -8,14 +8,14 @@ const links = [
 ];
 ---
 
-<footer class="border-t border-hairline">
+<footer class="border-t border-border bg-surface">
 	<div
-		class="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-8 font-mono text-xs uppercase tracking-wide text-slate sm:flex-row sm:items-center sm:justify-between"
+		class="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-8 font-mono text-xs uppercase tracking-wide text-muted sm:flex-row sm:items-center sm:justify-between"
 	>
 		<p>&copy; {new Date().getFullYear()} Adam Jurdi</p>
 		<nav class="flex gap-6">
 			{links.map((link) => (
-				<a href={link.href} class="transition-colors hover:text-copper">{link.label}</a>
+				<a href={link.href} class="transition-colors hover:text-accent">{link.label}</a>
 			))}
 		</nav>
 	</div>

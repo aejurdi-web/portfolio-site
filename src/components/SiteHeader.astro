@@ -12,10 +12,43 @@ const navItems = [
 		<a href="/" class="font-display text-lg font-semibold tracking-tight text-ink">
 			Adam Jurdi
 		</a>
-		<nav class="flex gap-6 font-mono text-xs uppercase tracking-wide text-muted">
-			{navItems.map((item) => (
-				<a href={item.href} class="transition-colors hover:text-accent">{item.label}</a>
-			))}
-		</nav>
+		<div class="flex items-center gap-6">
+			<nav class="flex gap-6 font-mono text-xs uppercase tracking-wide text-muted">
+				{navItems.map((item) => (
+					<a href={item.href} class="transition-colors hover:text-accent">{item.label}</a>
+				))}
+			</nav>
+			<button
+				id="terminal-toggle"
+				type="button"
+				aria-pressed="false"
+				aria-label="Toggle retro terminal mode"
+				class="rounded border border-border px-2 py-1 font-mono text-xs uppercase tracking-wide text-muted transition-colors hover:text-accent aria-pressed:border-accent aria-pressed:text-accent"
+			>
+				[ ]_ TERMINAL
+			</button>
+		</div>
 	</div>
 </header>
+
+<script is:inline>
+	(function () {
+		const button = document.getElementById('terminal-toggle');
+		if (!button) return;
+
+		const isActive = document.documentElement.dataset.theme === 'terminal';
+		button.setAttribute('aria-pressed', String(isActive));
+
+		button.addEventListener('click', () => {
+			const next = document.documentElement.dataset.theme !== 'terminal';
+			if (next) {
+				document.documentElement.dataset.theme = 'terminal';
+				sessionStorage.setItem('terminal-mode', '1');
+			} else {
+				delete document.documentElement.dataset.theme;
+				sessionStorage.removeItem('terminal-mode');
+			}
+			button.setAttribute('aria-pressed', String(next));
+		});
+	})();
+</script>

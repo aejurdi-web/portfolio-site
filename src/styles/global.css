@@ -24,3 +24,62 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Retro terminal mode */
+
+html[data-theme="terminal"] {
+  --color-accent: #33ff66;
+  --font-display: var(--font-mono);
+  --font-body: var(--font-mono);
+}
+
+html[data-theme="terminal"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(51, 255, 102, 0.06) 0px,
+    rgba(51, 255, 102, 0.06) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+html[data-theme="terminal"] h1,
+html[data-theme="terminal"] h2,
+html[data-theme="terminal"] h3,
+html[data-theme="terminal"] .text-accent {
+  text-shadow: 0 0 6px currentColor;
+}
+
+html[data-theme="terminal"] .rounded-lg,
+html[data-theme="terminal"] table {
+  border-radius: 0;
+}
+
+.hero-cursor {
+  display: none;
+}
+
+html[data-theme="terminal"] .hero-cursor {
+  display: inline-block;
+  color: var(--color-accent);
+  text-shadow: 0 0 6px currentColor;
+  animation: terminal-blink 1s steps(1) infinite;
+}
+
+@keyframes terminal-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="terminal"] .hero-cursor {
+    animation: none;
+    opacity: 1;
+  }
+}

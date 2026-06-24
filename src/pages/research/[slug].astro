@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import KeyTakeaway from '../../components/KeyTakeaway.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -12,7 +13,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, ticker, sector, rating, priceTarget, date } = entry.data;
+const { title, ticker, sector, rating, priceTarget, takeaway, date } = entry.data;
 ---
 
 <Layout title={`${title} — Adam Jurdi`}>
@@ -32,18 +33,6 @@ const { title, ticker, sector, rating, priceTarget, date } = entry.data;
 						<dd class="mt-1 text-ink">{sector}</dd>
 					</div>
 				)}
-				{rating && (
-					<div>
-						<dt>Rating</dt>
-						<dd class="mt-1 text-ink">{rating}</dd>
-					</div>
-				)}
-				{priceTarget && (
-					<div>
-						<dt>Price Target</dt>
-						<dd class="mt-1 text-ink">{priceTarget}</dd>
-					</div>
-				)}
 				<div>
 					<dt>Date</dt>
 					<dd class="mt-1 text-ink">
@@ -52,6 +41,8 @@ const { title, ticker, sector, rating, priceTarget, date } = entry.data;
 				</div>
 			</dl>
 		</header>
+
+		<KeyTakeaway rating={rating} priceTarget={priceTarget} takeaway={takeaway} />
 
 		<div class="prose prose-invert mt-10 max-w-none prose-headings:font-display prose-headings:tracking-tight">
 			<Content />

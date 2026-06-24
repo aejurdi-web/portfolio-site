@@ -1,0 +1,24 @@
+---
+interface Props {
+	rating?: string;
+	priceTarget?: string;
+	takeaway?: string;
+}
+
+const { rating, priceTarget, takeaway } = Astro.props as Props;
+const hasContent = Boolean(rating || priceTarget || takeaway);
+---
+
+{hasContent && (
+	<div class="mt-8 border-l-2 border-accent bg-accent/5 px-5 py-4">
+		{(rating || priceTarget) && (
+			<p class="flex flex-wrap gap-4 font-mono text-xs uppercase tracking-wide text-accent">
+				{rating && <span>{rating}</span>}
+				{priceTarget && <span>{priceTarget}</span>}
+			</p>
+		)}
+		{takeaway && (
+			<p class={`text-base text-ink ${rating || priceTarget ? 'mt-2' : ''}`}>{takeaway}</p>
+		)}
+	</div>
+)}

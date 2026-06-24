@@ -11,6 +11,7 @@ const research = defineCollection({
     sector: z.string().optional(),
     rating: z.string().optional(),
     priceTarget: z.string().optional(),
+    takeaway: z.string().optional(),
     draft: z.boolean().default(true),
   }),
 });

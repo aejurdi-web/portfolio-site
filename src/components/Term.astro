@@ -1,0 +1,32 @@
+---
+import { glossary } from '../data/glossary';
+
+interface Props {
+	term: string;
+}
+
+const { term } = Astro.props as Props;
+const definition = glossary[term];
+const id = `term-${term.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+---
+
+{definition ? (
+	<span class="group relative inline-block">
+		<button
+			type="button"
+			class="border-b border-dotted border-muted text-ink transition-colors hover:border-accent focus:border-accent focus:outline-none"
+			aria-describedby={id}
+		>
+			<slot>{term}</slot>
+		</button>
+		<span
+			id={id}
+			role="tooltip"
+			class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 w-64 -translate-x-1/2 scale-95 border border-border bg-surface px-3 py-2 text-xs leading-relaxed font-body normal-case text-ink opacity-0 shadow-lg transition-[opacity,transform] duration-150 group-hover:scale-100 group-hover:opacity-100 group-focus-within:scale-100 group-focus-within:opacity-100"
+		>
+			{definition}
+		</span>
+	</span>
+) : (
+	<slot>{term}</slot>
+)}

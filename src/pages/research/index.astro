@@ -7,14 +7,14 @@ const entries = (await getCollection('research', ({ data }) => !data.draft)).sor
 );
 ---
 
-<Layout title="Research — Adam Jurdi">
+<Layout title="Adam Jurdi: Research">
 	<section class="mx-auto max-w-3xl px-6 py-20">
 		<p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">Research</p>
 		<h1 class="mt-4 font-display text-4xl font-semibold tracking-tight text-ink">
 			Written equity theses
 		</h1>
 		<p class="mt-4 max-w-xl text-muted">
-			Full-length theses on semiconductor companies — coverage initiations, updates, and the
+			Full-length theses on semiconductor companies: coverage initiations, updates, and the
 			assumptions behind each call.
 		</p>
 
@@ -30,7 +30,7 @@ const entries = (await getCollection('research', ({ data }) => !data.draft)).sor
 						href={`/research/${entry.id}`}
 						class="grid grid-cols-[5rem_1fr_6rem] items-baseline gap-4 border-b border-border py-4 transition-colors hover:bg-ink/[0.03] sm:grid-cols-[5rem_1fr_8rem_6rem]"
 					>
-						<span class="font-mono text-xs text-muted">{entry.data.ticker ?? '—'}</span>
+						<span class="font-mono text-xs text-muted">{entry.data.ticker ?? 'N/A'}</span>
 						<span class="font-display text-base text-ink">{entry.data.title}</span>
 						<span class="hidden font-mono text-xs uppercase tracking-wide text-muted sm:block">
 							{entry.data.sector ?? ''}

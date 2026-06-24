@@ -18,7 +18,7 @@ const YIELD_MODEL_LABELS: Record<YieldModel, string> = {
 };
 
 function formatCurrency(value: number) {
-	if (!Number.isFinite(value)) return '—';
+	if (!Number.isFinite(value)) return 'N/A';
 	return value.toLocaleString('en-US', {
 		style: 'currency',
 		currency: 'USD',
@@ -201,7 +201,7 @@ export default function YieldCalculator() {
 						</div>
 					</div>
 					<p className="mt-2 font-mono text-[0.65rem] leading-snug text-muted">
-						Illustrative estimate ({waferDiameter}mm, {waferDiameter === 300 ? '5nm-class' : 'mature node'}) — override with your own figure.
+						Illustrative estimate ({waferDiameter}mm, {waferDiameter === 300 ? '5nm-class' : 'mature node'}): override with your own figure.
 					</p>
 				</div>
 
@@ -355,7 +355,7 @@ export default function YieldCalculator() {
 								<p className="font-mono text-xs uppercase tracking-wide text-accent">Manufacturing Constraint</p>
 								<p className="mt-2 text-sm text-ink">
 									{totalLogicArea}mm² exceeds the ~858mm² reticle limit (TSMC's max single-exposure field). A
-									monolithic die at this size isn't just more expensive — it's physically impossible to print
+									monolithic die at this size isn't just more expensive. It's physically impossible to print
 									in one exposure, regardless of cost.
 								</p>
 							</div>
@@ -379,7 +379,7 @@ export default function YieldCalculator() {
 									</div>
 									<div className="flex justify-between">
 										<dt>Yield</dt>
-										<dd className="text-ink">{monoExceedsReticle ? '—' : `${(monoYieldPct * 100).toFixed(1)}%`}</dd>
+										<dd className="text-ink">{monoExceedsReticle ? 'N/A' : `${(monoYieldPct * 100).toFixed(1)}%`}</dd>
 									</div>
 								</dl>
 							</div>
@@ -407,7 +407,7 @@ export default function YieldCalculator() {
 							<p className="font-mono text-sm text-ink">
 								{monoExceedsReticle ? (
 									<>
-										<span className="text-accent">Chiplet</span> wins — monolithic is not manufacturable at this
+										<span className="text-accent">Chiplet</span> wins: monolithic is not manufacturable at this
 										die size.
 									</>
 								) : (

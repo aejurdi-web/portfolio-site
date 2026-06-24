@@ -115,7 +115,7 @@ export default function WaferMap({ waferDiameterMm, dieAreaMm2, yieldFraction }:
 			</div>
 
 			<p className="mt-3 text-center font-mono text-[0.65rem] leading-snug text-muted">
-				Illustrative — {totalFull.toLocaleString('en-US')} representative dies shown, {goodCount.toLocaleString('en-US')} good.
+				Illustrative: {totalFull.toLocaleString('en-US')} representative dies shown, {goodCount.toLocaleString('en-US')} good.
 			</p>
 		</div>
 	);

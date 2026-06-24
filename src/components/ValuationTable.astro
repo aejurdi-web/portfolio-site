@@ -4,14 +4,30 @@ interface ValuationRow {
 	assumptions: string;
 	low: string;
 	high: string;
-	mid: string;
+	mid?: string;
+	highlight?: boolean;
 }
 
 interface Props {
 	rows: ValuationRow[];
+	columns?: Partial<{
+		method: string;
+		assumptions: string;
+		low: string;
+		high: string;
+		mid: string;
+	}>;
 }
 
-const { rows } = Astro.props as Props;
+const { rows, columns = {} } = Astro.props as Props;
+const labels = {
+	method: columns.method ?? 'Method',
+	assumptions: columns.assumptions ?? 'Assumptions',
+	low: columns.low ?? 'Low',
+	high: columns.high ?? 'High',
+	mid: columns.mid ?? 'Mid',
+};
+const showMid = rows.some((row) => row.mid);
 ---
 
 <div class="my-8 overflow-x-auto border border-border not-prose">
@@ -19,30 +35,34 @@ const { rows } = Astro.props as Props;
 		<thead>
 			<tr class="bg-surface">
 				<th class="border-b border-border px-4 py-3 text-left font-mono text-xs uppercase tracking-wide text-muted">
-					Method
+					{labels.method}
 				</th>
 				<th class="border-b border-border px-4 py-3 text-left font-mono text-xs uppercase tracking-wide text-muted">
-					Assumptions
+					{labels.assumptions}
 				</th>
 				<th class="border-b border-border px-4 py-3 text-right font-mono text-xs uppercase tracking-wide text-muted">
-					Low
+					{labels.low}
 				</th>
 				<th class="border-b border-border px-4 py-3 text-right font-mono text-xs uppercase tracking-wide text-muted">
-					High
+					{labels.high}
 				</th>
-				<th class="border-b border-border px-4 py-3 text-right font-mono text-xs uppercase tracking-wide text-muted">
-					Mid
-				</th>
+				{showMid && (
+					<th class="border-b border-border px-4 py-3 text-right font-mono text-xs uppercase tracking-wide text-muted">
+						{labels.mid}
+					</th>
+				)}
 			</tr>
 		</thead>
 		<tbody>
-			{rows.map(({ method, assumptions, low, high, mid }) => (
-				<tr class="border-b border-border transition-colors last:border-b-0 hover:bg-ink/[0.03]">
-					<td class="px-4 py-3 text-ink">{method}</td>
+			{rows.map(({ method, assumptions, low, high, mid, highlight }) => (
+				<tr class={`border-b border-border transition-colors last:border-b-0 hover:bg-ink/[0.03] ${highlight ? 'bg-accent/5' : ''}`}>
+					<td class={`px-4 py-3 ${highlight ? 'font-semibold text-accent' : 'text-ink'}`}>{method}</td>
 					<td class="px-4 py-3 font-mono text-xs text-muted">{assumptions}</td>
 					<td class="px-4 py-3 text-right font-mono text-ink">{low}</td>
 					<td class="px-4 py-3 text-right font-mono text-ink">{high}</td>
-					<td class="px-4 py-3 text-right font-mono font-semibold text-accent">{mid}</td>
+					{showMid && (
+						<td class="px-4 py-3 text-right font-mono font-semibold text-accent">{mid}</td>
+					)}
 				</tr>
 			))}
 		</tbody>

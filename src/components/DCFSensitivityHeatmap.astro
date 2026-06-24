@@ -1,0 +1,89 @@
+---
+interface Props {
+	wacc: number[];
+	tgr: number[];
+	values: number[][];
+	baseCase: { wacc: number; tgr: number };
+}
+
+const { wacc, tgr, values, baseCase } = Astro.props as Props;
+
+const flat = values.flat();
+const min = Math.min(...flat);
+const max = Math.max(...flat);
+
+function opacityFor(value: number) {
+	const t = max === min ? 1 : (value - min) / (max - min);
+	return Math.round((0.1 + t * 0.55) * 100);
+}
+
+function fmtPct(n: number) {
+	return `${n.toFixed(1)}%`;
+}
+---
+
+<div class="my-8 overflow-x-auto border border-border not-prose">
+	<table class="w-full min-w-[40rem] border-collapse text-sm">
+		<caption class="sr-only">DCF sensitivity: implied share price by WACC and terminal growth rate</caption>
+		<thead>
+			<tr class="bg-surface">
+				<th
+					scope="col"
+					class="border-b border-r border-border px-3 py-2 text-left font-mono text-xs uppercase tracking-wide text-muted"
+				>
+					TGR / WACC
+				</th>
+				{wacc.map((w) => (
+					<th
+						scope="col"
+						class="border-b border-border px-3 py-2 text-right font-mono text-xs uppercase tracking-wide text-muted"
+					>
+						{fmtPct(w)}
+					</th>
+				))}
+			</tr>
+		</thead>
+		<tbody>
+			{tgr.map((t, i) => (
+				<tr class="border-b border-border last:border-b-0">
+					<th
+						scope="row"
+						class="border-r border-border bg-surface px-3 py-2 text-left font-mono text-xs uppercase tracking-wide text-muted"
+					>
+						{fmtPct(t)}
+					</th>
+					{wacc.map((w, j) => {
+						const value = values[i][j];
+						const isBaseCase = w === baseCase.wacc && t === baseCase.tgr;
+						const pct = opacityFor(value);
+						const id = `dcf-cell-${i}-${j}`;
+						return (
+							<td class={`relative p-0 ${isBaseCase ? 'ring-2 ring-inset ring-ink' : ''}`}>
+								<span class="group relative block">
+									<button
+										type="button"
+										style={`background-color: color-mix(in srgb, var(--color-accent) ${pct}%, transparent);`}
+										class="block w-full px-3 py-2 text-right font-mono text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+										aria-describedby={id}
+									>
+										${value}
+									</button>
+									<span
+										id={id}
+										role="tooltip"
+										class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 w-44 -translate-x-1/2 scale-95 border border-border bg-surface px-3 py-2 text-xs leading-relaxed font-body normal-case text-ink opacity-0 shadow-lg transition-[opacity,transform] duration-150 group-hover:scale-100 group-hover:opacity-100 group-focus-within:scale-100 group-focus-within:opacity-100"
+									>
+										WACC {fmtPct(w)}, TGR {fmtPct(t)}: ${value}
+									</span>
+								</span>
+							</td>
+						);
+					})}
+				</tr>
+			))}
+		</tbody>
+	</table>
+	<p class="border-t border-border px-3 py-2 font-mono text-[11px] uppercase tracking-wide text-muted">
+		Shading reflects implied share price (lighter = lower, fuller = higher). Bordered cell marks the published base case.
+	</p>
+</div>

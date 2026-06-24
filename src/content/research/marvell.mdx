@@ -12,6 +12,7 @@ draft: false
 
 import KeyMetricsTable from '../../components/KeyMetricsTable.astro';
 import ValuationTable from '../../components/ValuationTable.astro';
+import DCFSensitivityHeatmap from '../../components/DCFSensitivityHeatmap.astro';
 import Term from '../../components/Term.astro';
 
 ## Thesis
@@ -47,6 +48,19 @@ The clearest external validation arrived when NVIDIA announced a $2B strategic i
 	{ method: 'Sum-of-the-Parts', assumptions: 'Segment EV/EBITDA', low: '$105', high: '$157', mid: '$131' },
 	{ method: '52-Week Range', assumptions: 'Market price', low: '$47', high: '$103', mid: '$75' },
 ]} />
+
+<DCFSensitivityHeatmap
+	wacc={[8.5, 9, 9.5, 10.5, 11, 11.5, 12]}
+	tgr={[2, 2.5, 3, 3.5, 4]}
+	values={[
+		[102, 95, 88, 77, 73, 69, 65],
+		[110, 101, 94, 81, 76, 72, 68],
+		[119, 109, 100, 86, 80, 75, 71],
+		[130, 118, 108, 92, 85, 80, 75],
+		[143, 129, 116, 98, 91, 84, 79],
+	]}
+	baseCase={{ wacc: 9.5, tgr: 3 }}
+/>
 
 Blended price target: **$130**, ~33% upside from the $97.88 entry price.
 

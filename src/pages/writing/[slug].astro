@@ -15,8 +15,10 @@ const { Content } = await render(entry);
 ---
 
 <Layout title={entry.data.title}>
-	<main class="mx-auto max-w-2xl px-6 py-24 prose">
-		<h1>{entry.data.title}</h1>
-		<Content />
+	<main class="mx-auto max-w-2xl px-6 py-24">
+		<h1 class="font-display text-4xl font-semibold tracking-tight text-ink">{entry.data.title}</h1>
+		<div class="prose prose-invert mt-10 max-w-none prose-headings:font-display prose-headings:tracking-tight">
+			<Content />
+		</div>
 	</main>
 </Layout>

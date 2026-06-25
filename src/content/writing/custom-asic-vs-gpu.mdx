@@ -1,0 +1,46 @@
+---
+title: 'Custom ASIC vs GPU: The Economics of Inference at Scale'
+description: 'Why the most important chip decision in AI is not about performance. It is about scale, and what that means for where the market goes next.'
+date: 2026-06-24
+draft: false
+---
+
+I got into custom silicon almost by accident. I was trying to understand Marvell, and Marvell introduced me to custom chips, and that pulled me into Broadcom, and somewhere in there I ended up learning more about wafers than I ever expected to. What kept me going was the scale of it. You keep hearing about these companies pouring tens of billions of dollars in capex into AI, and at first I wasn't totally sure where all that money was actually going. This is my attempt to map that out, starting with the most important chip decision underneath all of it. The payoff, if you stick with it, is that you can sit down and watch an NVIDIA GTC keynote and actually understand what's being announced and why it moves the space. That clarity is what hooked me.
+
+## The question everyone asks wrong
+
+People frame the custom ASIC versus GPU debate as 'which chip is better.' That's the wrong question, and getting it wrong leads to bad conclusions about where this market is headed. Neither one is better in the abstract. The real question is about scale: at what volume does the brutal upfront cost of designing your own chip get outweighed by how much cheaper it is to run? Everything that matters flows from that one tradeoff.
+
+## What a GPU actually is, and why it won
+
+A GPU is a generalist. NVIDIA's chips are designed to do massively parallel computation across an enormous range of workloads: training, inference, scientific computing, graphics, whatever you point them at. That flexibility is exactly why NVIDIA owns the AI buildout right now. When the field is moving fast and nobody is certain what next year's model architecture looks like, you want hardware that can run anything. You pay for that optionality, NVIDIA's gross margins north of 70% tell you how much, but in a fast-moving field, paying for flexibility is rational.
+
+## What a custom ASIC actually is, and the bet it makes
+
+An ASIC, an Application-Specific Integrated Circuit, does the opposite. You take one specific task and you burn it into silicon permanently. Google's TPU is the canonical example: Google ran so much of its own AI workload that it became worth designing a chip that does exactly that one thing, far more efficiently than a general-purpose GPU could. The efficiency gain comes from specificity. A custom ASIC built for transformer inference knows exactly what operations are coming, in what order, with what memory access pattern. It can be designed around that certainty: power management that anticipates the workload instead of reacting to it, memory placed precisely where it's needed, no transistors wasted on capabilities the workload never uses. The result is something like 30 to 50% better efficiency on that specific task, and at data center scale, where power is one of the largest operating costs, that translates into hundreds of millions of dollars.
+
+## The catch nobody mentions: NRE
+
+Here's the part that explains why everyone doesn't just build ASICs. I got a head start on this from someone who works at Broadcom, who pointed me toward what was actually worth researching when I said I wanted to break into this space. The thing that stuck with me: building a system on package involves an enormous number of steps, each with its own costs, some fixed, some variable, and the entire industry is racing to cut those costs and lift yields in a dozen different ways at once. We are genuinely entering a new era of chip design and manufacturing. Moore's Law in its classic form is fading, and what's replacing it is this messier, more creative world of packaging, chiplets, and custom silicon.
+
+The single biggest fixed cost is NRE, non-recurring engineering. Designing a custom chip costs somewhere between $50M and $500M-plus before a single chip ships: design, verification, mask sets, tape-outs, and the long climb up the yield curve. A GPU spreads NVIDIA's R&D across millions of units sold to everyone. A custom ASIC makes you eat the entire design cost yourself, then recover it only across your own volume. So a custom ASIC only makes sense if you run enough of one specific workload to amortize that upfront cost and still come out ahead on the per-unit savings.
+
+## Where the crossover actually sits
+
+This is why only the hyperscalers build custom silicon at scale. Google, Amazon, Microsoft, and Meta run inference at a volume where the NRE becomes a rounding error and the per-unit efficiency advantage compounds into billions. For a company running moderate AI workloads, the NRE never gets amortized, and the GPU remains the correct answer precisely because you can rent flexibility instead of buying a fixed bet. That crossover point, the workload volume where custom silicon starts winning, is the single most important variable in this market. It's the same logic as the chiplet yield economics in the calculator on this site: a fixed cost that only pays off above a certain scale. Once you see that pattern, you see it everywhere in semiconductors.
+
+## The data is already turning
+
+This isn't theoretical anymore. In 2026, custom ASIC server shipments are growing at roughly 44.6% year over year, nearly three times the 16.1% growth rate for GPU-based AI servers, according to TrendForce. Custom silicon is projected to reach close to 28% of the total AI server market, its highest share in years. The shift is happening in real shipment numbers, not just slideware.
+
+## So does custom silicon eventually eat the GPU's lunch?
+
+Here's where I'll speculate. The case for 'yes, eventually' runs like this: right now the field moves so fast that flexibility is worth paying for, but workloads don't stay novel forever. As model architectures stabilize, as transformer inference becomes a known, repeated, industrial-scale operation, the value of GPU flexibility declines and the value of ASIC efficiency rises. Once you know exactly what you're going to run a billion times a day, paying NVIDIA's margin for the ability to run something else starts to look like waste.
+
+But I don't think it's as clean as 'ASICs win.' Two things cut against the simple version. First, the frontier keeps moving. Every time architectures seem to settle, a new approach resets the board, and at the frontier, flexibility is king again. Second, NVIDIA isn't standing still. It's actively blurring the line, building ways for custom silicon to plug into its own architecture rather than replace it, which turns 'ASIC vs GPU' into 'ASIC and GPU' in a lot of real deployments. The clearest proof is in the deployment data: even as custom silicon ramps, GPU-based systems still account for roughly 60% of AWS's AI server buildout in 2026. The pragmatic answer the market has landed on is dual-track: custom silicon for predictable, high-volume inference, GPUs for flexible training and experimentation.
+
+My honest read: the custom silicon market grows faster than the GPU market from here, and over a long enough horizon, custom silicon probably becomes the larger share of inference compute specifically, because inference at scale is exactly the stable, high-volume workload ASIC economics were built for. But training, and anything at the research frontier, stays GPU territory for a long time. The future isn't one chip winning. It's the workload splitting in two, and the economics deciding which half goes where.
+
+## Where I actually land
+
+Here's where I'll be honest about my own view, including the uncertainty in it. I think a lot of this is already being priced in. But I also believe there is opportunity everywhere, at all times, if you're willing to do the work to find it, which is exactly why I spend time trying to understand where the market is heading from other investors' perspectives, both retail and institutional. I'll admit something too: sometimes I worry we're pricing these companies too fast, that a multiple gets handed to anyone who says 'Artificial Intelligence' enough times on an earnings call. I know that feeling is common, and I know I'm early in my investing career with a lot still to learn. But sitting with that tension, real structural growth on one side, genuine froth on the other, is exactly the work. The custom silicon shift is real. The question is always what's already in the price, and that's the part I'm still sharpening.

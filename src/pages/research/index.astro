@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 const entries = (await getCollection('research', ({ data }) => !data.draft)).sort(
-	(a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.id.localeCompare(b.id)
 );
 ---
 

@@ -29,7 +29,7 @@ const entries = (await getCollection('writing', ({ data }) => !data.draft)).sort
 					>
 						<span class="font-display text-base text-ink">{entry.data.title}</span>
 						<span class="font-mono text-xs text-muted">
-							{entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+							{entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
 						</span>
 					</a>
 				))}

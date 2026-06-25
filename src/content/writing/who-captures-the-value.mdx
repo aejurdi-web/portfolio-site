@@ -1,0 +1,38 @@
+---
+title: 'Who Captures the Value: Mapping the Custom Silicon Stack'
+description: 'Everyone talks about hyperscalers building their own chips. Almost none of them build anything alone. Here is who actually does the work, and who makes the money.'
+date: 2026-06-24
+draft: false
+---
+
+In my last post I argued that the AI chip market is splitting in two, custom silicon for stable high-volume inference, GPUs for the frontier. That left an obvious question hanging, the same one that pulled me into this whole topic: where does all that capex actually go? So I spent time tracing it, and the thing that struck me most wasn't any single fact. It was how intricate and how deliberate the whole chain is. Every layer is its own business with its own economics, and once I mapped where the money actually flows, the picture finally clicked. This is that map.
+
+## 'Building their own chips' is mostly a figure of speech
+
+You hear it constantly: Google, Amazon, Meta, OpenAI are all building their own AI chips. It's technically true and practically misleading. Most of them aren't building anything alone. A hyperscaler brings the specification, what the chip needs to do, and hands the actual silicon engineering to a design partner. The hyperscaler owns the design and the strategy. Someone else does the hard part of turning it into working silicon. Understanding who that someone is, at each layer, is how you understand where the value actually accrues.
+
+## Layer one: the design houses
+
+This is the layer that surprised me most, because it's a near-duopoly hiding in plain sight. Two companies, Broadcom and Marvell, together account for an estimated 95% of the custom AI ASIC co-design market. Broadcom is the dominant one, with a reported 70% share and a customer list that reads like a who's who of AI: Google's TPUs, Meta's accelerators, and newer programs with OpenAI, Anthropic, and Apple. Marvell is the credible challenger at roughly 20 to 25%, anchored by Amazon's Trainium and Microsoft's Maia.
+
+What makes this layer remarkable is the economics. These design houses don't own factories. The hyperscaler customer owns the design and absorbs the manufacturing capex, while the design house provides the IP, the interconnect, and the engineering expertise. The result is a capital-light model with reported gross margins around 78%, higher even than NVIDIA's, on a fraction of the capital intensity. They capture the economics of the AI buildout without carrying the balance sheet of a chipmaker. I cover Marvell's position in this layer in more depth in my Marvell research note.
+
+## Layer two: the manufacturer, and the chokepoint
+
+Every chip in this story, NVIDIA's GPUs and every hyperscaler ASIC alike, runs through one company: TSMC. It fabricates for all of them, at the most advanced nodes, which makes it the single most strategically critical and least substitutable link in the entire chain. This is also where the real bottleneck lives. Advanced packaging capacity, the CoWoS process that stitches compute and memory together, is a genuine constraint, and when it tightens, it delays everyone's timelines at once without discriminating between an NVIDIA order and a custom ASIC. A chokepoint that affects every player equally is its own kind of risk, the kind you can't diversify around.
+
+## Layer three: NVIDIA's counter-move
+
+Here's the most strategically clever thing in the whole stack. Faced with hyperscalers building alternatives to its GPUs, NVIDIA didn't just fight the trend. It built a way to absorb it, called NVLink Fusion. The idea: let a hyperscaler use its own custom ASIC, but connect it through NVIDIA's interconnect and rack architecture. NVIDIA loses the GPU sale on that accelerator, but it keeps the customer inside its ecosystem, still buying NVIDIA's CPUs, networking, switches, and rack-scale infrastructure around the custom chip.
+
+It's a genuinely shrewd move. Instead of treating custom silicon as a pure threat, NVIDIA turned 'ASIC versus GPU' into 'ASIC and GPU,' positioning itself to take a cut of the buildout even when it doesn't sell the accelerator. This is the real-world version of the dual-track future I described in the last post, except NVIDIA engineered the 'and' on purpose.
+
+## Layer four: the integrators
+
+Once the silicon exists, someone has to turn it into a finished, racked, cooled, deployable system. That's the integrator layer, the server builders: Supermicro, Dell, HPE, Lenovo. They take the heterogeneous pile of GPUs, custom ASICs, CPUs, and networking and assemble it into a product a data center can actually install and run. It's lower-margin than the design layer, but it's the physical bridge between silicon and a working AI factory, and at the scale of today's buildout, that integration is non-trivial. I cover one name in this layer, Supermicro, in my SMCI research note.
+
+## Putting the map together
+
+Stack it up and the flow is clear. A hyperscaler defines what it needs. A design house, usually Broadcom or Marvell, turns that into silicon. TSMC manufactures it. NVLink Fusion, if used, plugs it into NVIDIA's ecosystem. An integrator like Supermicro or Dell assembles it into a deployable system. Five distinct layers, five distinct sets of economics, for what we casually call 'a company building its own chip.'
+
+The reason I find this worth mapping isn't trivia. It's that each layer has a completely different risk and margin profile, and the casual narrative, 'hyperscalers are going custom, NVIDIA is in trouble', misses almost all of it. NVIDIA isn't simply losing. The design houses are quietly some of the best businesses in the whole chain. TSMC is the chokepoint everyone depends on. And the integrators do essential, unglamorous work at the end. When I look at companies in this space, I'm always asking which layer they sit in, because that, more than the AI headline, is what determines how they actually make money.

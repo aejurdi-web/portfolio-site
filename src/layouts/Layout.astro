@@ -35,5 +35,17 @@ const { title = 'Adam Jurdi' } = Astro.props;
 			<slot />
 		</div>
 		<SiteFooter />
+		<script is:inline>
+			document.querySelectorAll('a[href]').forEach(function(a) {
+				var href = a.getAttribute('href');
+				if (!href) return;
+				var isPdf = href.toLowerCase().endsWith('.pdf');
+				var isExternal = /^https?:\/\//i.test(href) && !href.includes(location.hostname);
+				if (isPdf || isExternal) {
+					a.setAttribute('target', '_blank');
+					a.setAttribute('rel', 'noopener noreferrer');
+				}
+			});
+		</script>
 	</body>
 </html>

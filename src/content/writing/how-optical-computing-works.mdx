@@ -1,0 +1,46 @@
+---
+title: 'How Optical Computing Actually Works, and Why It Might Matter'
+description: 'AI is hitting a power wall. One way around it is to stop computing with electricity and start computing with light. Here is how that actually works.'
+date: 2026-06-27
+draft: false
+---
+
+## The wall everyone is running into
+
+Every chip in every data center today computes the same way: by pushing electrons through transistors. That has worked for seventy years. The problem now is heat and power. Electrons moving through material meet resistance, and resistance makes heat. The faster and denser you run them, the more heat you produce and the more power you draw. AI has pushed this so hard that the limiting factor is no longer how fast a chip could theoretically compute. It is how much power you can feed it and how much heat you can pull off it. That is the power wall, and it is the single biggest constraint on AI infrastructure right now.
+
+So a natural question follows: what if we computed with light instead?
+
+## Why light is interesting
+
+Photons, the particles of light, behave differently from electrons in ways that matter here. They generate far less heat. They travel faster. They are less affected by temperature and interference. And they have one property electrons simply do not. Beams of different wavelengths, different colors, can travel down the same physical channel simultaneously, each carrying its own separate stream of data, without corrupting one another. Run ten colors through one waveguide and you have ten independent computations sharing the same piece of hardware at the same instant. Electrons crammed into the same wire just interfere and turn to noise.
+
+If you could do the heavy lifting of AI with light, you could in principle break through the heat and power walls that cap silicon. That is the entire promise. The question is whether it actually works in practice, and to answer that you have to understand what the heavy lifting actually is.
+
+## The one operation that matters
+
+Underneath all the complexity, an AI model spends roughly ninety percent of its effort doing one thing: matrix multiplication. Strip away the math vocabulary and matrix multiplication is just a pattern repeated billions of times. Take a list of input numbers. Multiply each one by a corresponding weight. Add up all the results. That single step, multiply each input by a weight and sum the products, is called a multiply-accumulate, or MAC.
+
+A neural network is, at the hardware level, billions upon billions of MACs. A GPU performs them with electronic circuits, very fast, but each one costs energy and gives off heat. This is the operation that, if you could do it more efficiently, would change everything. And it turns out light is naturally good at exactly this.
+
+## How light physically does the math
+
+Two properties of light do the work. The first handles multiplication. The second handles addition.
+
+Multiplication is brightness. Encode an input number as a beam of light at a certain intensity. Now pass that beam through a material tuned to let through only part of the light, say thirty percent. What comes out the other side is the input multiplied by 0.30. You have just performed a multiplication, and the weight, the 0.30, is physically embodied as how transparent that material is. Change the transparency and you change the weight. This happens at the speed of light passing through a thin structure, with almost no heat, because you are not forcing electrons through resistance. You are simply letting photons pass.
+
+Addition is combination. Light has a clean property: if you steer multiple beams onto the same point, their intensities add together on their own. No circuit, no logic gate. The photons just combine. So if you take many beams, each one already multiplied by its own weight, and direct them all onto a single detector, that detector reads the sum of all of them.
+
+Now put the two together. Many inputs, each multiplied by its own weight through a tuned material, all converging and summing onto one detector. That is a complete multiply-accumulate. An entire row of a matrix multiplication, done in a single pass of light through a structure, rather than as a long sequence of electronic steps. A GPU grinds that row out as many separate operations. An optical chip does it as one physical event, at the speed of light.
+
+That is the heart of optical computing, and it is real physics, not a marketing claim.
+
+## Why this could matter enormously
+
+If the most expensive operation in AI, the one that consumes the overwhelming majority of the power, can be done as a passive physical process instead of an active electronic one, the implications for energy and speed are large. You would be performing AI's heaviest math at a small fraction of the power it takes electronically, and almost instantly, in speed terms. In a world where data centers are increasingly constrained by how many gigawatts they can secure, a technology that performs the core computation at a fraction of the power is not a marginal improvement. It is a different category.
+
+That is the promise. It is genuine, and it is grounded in real physics.
+
+## The catch, and why this is not already everywhere
+
+If it is this elegant, the obvious question is why every data center is not already optical. The answer is that turning this physics into a manufacturable product has defeated companies for decades, for reasons that are worth a piece of their own. The short version: getting data into and out of the optical domain costs power that can erase the savings, the whole approach is analog and therefore vulnerable to noise and imprecision, and the optical components themselves have historically been far too large to pack onto a chip in the numbers a GPU achieves. Whether optical computing finally arrives depends entirely on whether those problems have actually been solved, which is the subject of the next piece.

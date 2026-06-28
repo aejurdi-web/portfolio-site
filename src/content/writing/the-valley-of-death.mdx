@@ -1,0 +1,46 @@
+---
+title: 'The Valley of Death: Why Optical Computing Has Always Been Five Years Away'
+description: 'The physics of computing with light is real. Turning it into a chip you can actually buy has defeated companies for decades. Here is what stands in the way.'
+date: 2026-06-27
+draft: false
+---
+
+## The pattern
+
+Optical computing has a long history of being almost here. Every few years, a team publishes a stunning result, light performing AI math at a fraction of the power, and the headlines say the GPU's days are numbered. Then nothing ships. A few years later, it happens again. Understanding why that pattern keeps repeating is the difference between getting excited by a demo and actually judging whether a company will make it.
+
+The reason is something deep-tech investors call the valley of death: the gap between a working laboratory result and a product you can manufacture reliably, at volume, at a price someone will pay. Optical computing's physics clears the lab easily. It is the valley that keeps stopping it. Three problems stand in the way.
+
+## Problem one: the conversion tax
+
+Your data does not start as light. It starts as electronic bits sitting in memory, and the answer you need at the end has to go back to electronic bits to be used by the rest of the system. So any optical computer has to convert electronic to optical going in, and optical back to electronic coming out.
+
+Those converters are not free. They take up space, and more importantly, they burn power. This creates a brutal break-even problem: you have to do enough computing in the optical domain to justify the energy you spent getting in and out of it. If your optical core is dazzlingly efficient but you spend all your savings on conversion at the edges, you have built an expensive way to accomplish nothing. Many promising optical designs have died right here, the core worked beautifully, but the end-to-end system, once you counted the conversion, was no better than a GPU. This is the quiet killer, and it is the first question worth asking about any optical chip: is the efficiency claim measured end-to-end, or just across the optical core in isolation?
+
+## Problem two: analog is messy
+
+Everything in the optical approach is analog. A weight is a brightness level, a transparency, a continuous physical quantity, not a clean digital 1 or 0.
+
+Analog is powerful, it is what lets light do a whole multiply-accumulate in one pass, but it is also fragile. A digital 1 is still a 1 even if the voltage is a little off. An analog brightness of 'thirty percent' can drift to thirty-one percent from a temperature change, a speck of contamination, or tiny variations in how the chip was manufactured, and now your answer is slightly wrong. Across a single operation, that is tolerable. Across millions of optical elements running billions of operations, small errors compound, and controlling them is extremely difficult.
+
+There is one saving grace, and it is the only reason this whole field is viable: AI inference is unusually tolerant of imprecision. A neural network does not need every calculation to be perfect to produce a good answer. That tolerance is the crack of daylight optical computing lives in. But 'somewhat error-tolerant' is not 'error-proof,' and holding precision across a massive analog system, through real-world temperature swings and manufacturing variation, is a problem that has humbled serious projects.
+
+## Problem three: the components have always been too big
+
+This is the historical dealbreaker, the one that, more than anything, explains the 'always five years away' pattern.
+
+The element that sets each weight, the optical modulator, the tunable material the light passes through, has traditionally been enormous by chip standards. Hundreds of microns across, where a transistor is measured in nanometers. The consequence is fatal to the whole premise: a GPU packs billions of compute elements onto one chip. Traditional optics could fit maybe a few thousand. So even though each optical operation is faster and lower-power, you simply cannot fit enough of them on a chip to compete with the sheer density of silicon. You win every individual race and lose the war on volume.
+
+Every serious attempt at optical computing eventually runs into this wall. The physics works. The per-operation numbers are real. But you cannot build a chip with only a few thousand compute elements and expect it to replace something with billions. Until someone shrinks the optical modulator by orders of magnitude, optical computing stays a beautiful demo that cannot scale.
+
+## So what would it actually take?
+
+Put the three together and you can write the spec for what a real optical-computing company has to prove, not claim, but prove:
+
+It has to do enough computing optically to beat the conversion tax end-to-end. It has to hold analog precision across a massive number of elements in real operating conditions, not just on a lab bench. And above all, it has to shrink the optical modulator by orders of magnitude so the chip can fit enough compute elements to actually rival a GPU on density, and it has to do that shrinking in a way that can be mass-produced, not hand-built one wafer at a time.
+
+That last point is the whole game. Any company claiming to have cracked optical computing is really claiming to have crossed this valley. The right response is not 'that is impossible,' the physics is real and the prize is enormous. The right response is to ask, precisely and unsentimentally, which of these three problems they claim to have solved, how, and whether the proof is a lab demo or a manufacturable process. Because the graveyard of this field is full of teams that solved one of the three, published a brilliant paper, and never crossed the valley.
+
+## Why this matters for anyone investing in the space
+
+The technology is genuinely promising, which means the interesting question is never 'does the physics work,' it does. The question is whether a specific team has crossed, or can credibly cross, the valley of death, and whether their headline numbers reflect a manufacturable end-to-end system or an isolated lab result. A company that can show real answers to the three problems above is doing something rare. A company quoting a 100x efficiency number without saying whether it is end-to-end, at production density, on manufacturable hardware, is quoting a lab demo. Knowing the difference is the entire job.

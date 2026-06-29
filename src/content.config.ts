@@ -13,6 +13,7 @@ const research = defineCollection({
     priceTarget: z.string().optional(),
     takeaway: z.string().optional(),
     order: z.number().optional(),
+    updated: z.boolean().optional(),
     draft: z.boolean().default(true),
   }),
 });

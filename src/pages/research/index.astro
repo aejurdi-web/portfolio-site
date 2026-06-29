@@ -34,7 +34,12 @@ const entries = (await getCollection('research', ({ data }) => !data.draft)).sor
 						class="grid grid-cols-[5rem_1fr_6rem] items-baseline gap-4 border-b border-border py-4 transition-colors hover:bg-ink/[0.03] sm:grid-cols-[5rem_1fr_8rem_6rem]"
 					>
 						<span class="font-mono text-xs text-muted">{entry.data.ticker ?? 'N/A'}</span>
-						<span class="font-display text-base text-ink">{entry.data.title}</span>
+						<span class="flex flex-wrap items-baseline gap-2">
+							<span class="font-display text-base text-ink">{entry.data.title}</span>
+							{entry.data.updated && (
+								<span class="font-mono text-[10px] uppercase tracking-[0.12em] text-accent border border-accent/40 px-1.5 py-px">Updated</span>
+							)}
+						</span>
 						<span class="hidden font-mono text-xs uppercase tracking-wide text-muted sm:block">
 							{entry.data.sector ?? ''}
 						</span>

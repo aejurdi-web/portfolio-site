@@ -26,4 +26,17 @@ const writing = defineCollection({
   }),
 });
 
-export const collections = { research, writing };
+const venture = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/venture' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date(),
+    sector: z.string().optional(),
+    takeaway: z.string().optional(),
+    stage: z.string().optional(),
+    draft: z.boolean().default(true),
+  }),
+});
+
+export const collections = { research, writing, venture };

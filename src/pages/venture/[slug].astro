@@ -1,0 +1,54 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+	const entries = await getCollection('venture');
+	return entries.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, sector, stage, takeaway, date } = entry.data;
+---
+
+<Layout title={`Adam Jurdi: ${title}`}>
+	<article class="mx-auto max-w-3xl px-6 py-20">
+		<a href="/venture" class="font-mono text-xs uppercase tracking-wide text-muted hover:text-accent">
+			&larr; Venture
+		</a>
+
+		<header class="mt-6 border-b border-border pb-8">
+			<p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">{stage ?? 'Venture'}</p>
+			<h1 class="mt-3 font-display text-4xl font-semibold tracking-tight text-ink">{title}</h1>
+
+			<dl class="mt-6 grid grid-cols-2 gap-4 font-mono text-xs uppercase tracking-wide text-muted sm:grid-cols-4">
+				{sector && (
+					<div>
+						<dt>Sector</dt>
+						<dd class="mt-1 text-ink">{sector}</dd>
+					</div>
+				)}
+				<div>
+					<dt>Date</dt>
+					<dd class="mt-1 text-ink">
+						{date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+					</dd>
+				</div>
+			</dl>
+		</header>
+
+		{takeaway && (
+			<div class="mt-8 border-l-2 border-accent bg-accent/5 px-5 py-4">
+				<p class="text-base text-ink">{takeaway}</p>
+			</div>
+		)}
+
+		<div class="prose prose-invert mt-10 max-w-none prose-headings:font-display prose-headings:tracking-tight">
+			<Content />
+		</div>
+	</article>
+</Layout>

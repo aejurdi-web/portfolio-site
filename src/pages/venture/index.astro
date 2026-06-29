@@ -1,0 +1,45 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('venture', ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.id.localeCompare(b.id)
+);
+---
+
+<Layout title="Adam Jurdi: Venture">
+	<section class="mx-auto max-w-3xl px-6 py-20">
+		<p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">Venture</p>
+		<h1 class="mt-4 font-display text-4xl font-semibold tracking-tight text-ink">
+			Private company analysis
+		</h1>
+		<p class="mt-4 max-w-xl text-muted">
+			Analysis of private, venture-stage technology companies, evaluated the way I would weigh an actual investment.
+		</p>
+
+		{entries.length === 0 ? (
+			<div class="mt-16 border-t border-border pt-10">
+				<p class="font-mono text-xs uppercase tracking-wide text-muted">No published coverage yet</p>
+				<p class="mt-2 text-muted">The first analysis is in progress. Check back soon.</p>
+			</div>
+		) : (
+			<div class="mt-12 border-t border-border">
+				{entries.map((entry) => (
+					<a
+						href={`/venture/${entry.id}`}
+						class="grid grid-cols-[5rem_1fr_6rem] items-baseline gap-4 border-b border-border py-4 transition-colors hover:bg-ink/[0.03] sm:grid-cols-[5rem_1fr_8rem_6rem]"
+					>
+						<span class="font-mono text-xs text-muted">{entry.data.stage ?? 'Venture'}</span>
+						<span class="font-display text-base text-ink">{entry.data.title}</span>
+						<span class="hidden font-mono text-xs uppercase tracking-wide text-muted sm:block">
+							{entry.data.sector ?? ''}
+						</span>
+						<span class="font-mono text-xs text-muted">
+							{entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+						</span>
+					</a>
+				))}
+			</div>
+		)}
+	</section>
+</Layout>

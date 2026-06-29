@@ -1,0 +1,79 @@
+---
+title: 'Neurophos: Computing With Light, and the People Trying to Make It Work'
+description: 'A venture-stage look at the photonics startup claiming it can replace the GPU.'
+date: 2026-06-29
+sector: 'Photonics / AI Compute'
+stage: 'Series A'
+takeaway: 'A venture-stage look at the photonics startup claiming it can replace the GPU. The physics is plausible and the team is unusually well-built for the hard part, manufacturing, but the entire bet rests on unproven, company-sourced performance claims surviving independent scrutiny.'
+draft: false
+---
+
+## A note on what this is
+
+This is the first private-company analysis I have written, and it is a different exercise from my public research. There is no stock price, no multiple, no quarterly filing to anchor on. Neurophos is a Series A startup whose first commercial product has not been pushed to full production yet. So this is not a valuation. It is an attempt to answer the question a venture investor actually faces: looking at this company today, with everything unproven, would I want exposure to it, and why? I find it genuinely compelling. I am also wary of the single risk that could sink it.
+
+For the technical foundation behind everything here, how optical computing works and why it is so hard to ship, I wrote two companion pieces: How Optical Computing Actually Works and The Valley of Death. This analysis builds on that groundwork.
+
+## What Neurophos is
+
+Neurophos is an Austin-based startup building an optical processing unit, the OPU, a chip that does AI inference with light instead of electricity. It spun out of the Duke University metamaterials lab of Professor David Smith, the lab that produced the first real-world electromagnetic "invisibility cloak" two decades ago. In January 2026 it raised a $110M Series A, oversubscribed, bringing total funding to $118M. The round was led by Gates Frontier, Bill Gates' venture firm, with participation from M12 (Microsoft's venture fund), Carbon Direct, Aramco Ventures, Bosch Ventures, Tectonic, and Space Capital.
+
+The pitch is simple to state and hard to deliver: build a chip that does AI's core math at a fraction of the power of a GPU, package it as a drop-in replacement, and ride the fact that data centers are running out of power before they run out of demand.
+
+## Why the problem is worth solving
+
+I will keep this short because I have written about it elsewhere. AI is increasingly constrained not by how fast chips can compute but by how much power and cooling a data center can physically supply. Inference, the running of trained models, is the majority of that compute, and it is growing relentlessly. If you can do inference's core operation, matrix multiplication, with light, you can in principle break through the power wall that caps silicon. That is the entire reason optical computing is interesting, and the entire reason serious money is chasing it. The prize is enormous.
+
+## The technology, and the central claim
+
+Every optical computing company lives or dies on one question: can it fit enough optical compute elements on a chip to rival the sheer density of a GPU? Historically the answer has been no, because optical modulators, the tunable elements that set each weight, have been hundreds of microns across, where transistors are nanometers. You simply could not fit enough of them on a chip to compete.
+
+Neurophos's entire reason to exist is its claimed answer to this. It says its metasurface modulator is roughly 10,000 times smaller than a traditional optical modulator, which would let it pack over one million optical processing elements onto a single device, enough for a 1,000 by 1,000 optical tensor core, against the 256 by 256 found in advanced electronic architectures. If that is real and manufacturable, it is the breakthrough that turns optical computing from 'always five years away' into a product.
+
+The company claims its chip delivers somewhere between 50 and 100 times the performance and energy efficiency of a leading GPU. The figure shifts between 50x and 100x depending on the source, and most of those sources trace back to the company itself, a press release, a CTO LinkedIn post, a founder interview. That does not make them false. But until there is independent, end-to-end measurement, on a manufacturable chip, including the cost of converting data into and out of the optical domain, these are best treated as the company's claims, not established facts. The most important question I would ask Neurophos directly is whether the efficiency figure is measured end-to-end or across the optical core in isolation, because that distinction has killed optical-computing companies before.
+
+There is one genuinely encouraging technical signal: the work has been published in Nature Nanotechnology. Peer-reviewed validation is not the same as a shipped product, but it is meaningfully more than a press release, and most pre-product startups cannot point to it.
+
+## The team, which is the real reason I take this seriously
+
+At Series A, with no product, you are not underwriting a chip. You are underwriting the people who say they can build it. This is where Neurophos is strongest, and it is the core of why I find it compelling rather than just interesting.
+
+The company is led by co-founders Dr. Patrick Bowen, who carried the metasurface science out of the Duke lab, and Dr. Andrew Traverso, its chief scientist, with Hod Finkelstein as CTO. Around them, in the months since the raise, the company has tripled its headcount and assembled a roster of veterans from NVIDIA, Apple, Samsung, Intel, AMD, Meta, ARM, Micron, Marvell, Mellanox, and Lightmatter. A few hires matter more than the logos suggest:
+
+Fu-Tai An joined as VP of VLSI, bringing senior VLSI and photonics engineering leadership from companies including Marvell, Infinera, and Nokia. Yuchun Zhou leads silicon photonics, having developed photonic integrated circuits for 1.6T pluggable optics at Intel and Lumentum. And the hire I find most telling: Tsachy Holovinger, Director of Quality, Reliability, and Failure Analysis, who spent over a decade at Intel leading reliability, yield, and process integration for Xeon processors.
+
+That last hire is the one I would point to if someone asked why I take the manufacturing claims seriously. A company that is only chasing an impressive lab demo does not prioritize a senior Intel yield-and-reliability veteran. Hiring for high-volume manufacturing reliability, this early, is what a company does when it actually intends to cross the gap between a working prototype and a shippable product. The team is not just optical physicists. It is optical physicists plus the manufacturing and VLSI people who have shipped real silicon at scale. For a company whose whole risk is lab-to-fab, that blend is exactly what you want to see.
+
+## Learning from the graveyard
+
+To understand why that team composition matters so much, you have to look at the companies that came before, because optical computing has a long history of brilliant teams that never shipped.
+
+The pattern is striking once you see it. Lightmatter, one of the most prominent and best-funded optical startups, an MIT spinout, effectively retreated from the hardest version of the problem: it shifted its emphasis from computing with light toward optical interconnect, using light to move data between chips rather than to do the computation itself. That is the easier, more immediately commercial problem, and the fact that the strongest player pivoted toward it tells you how brutal pure optical compute really is. Celestial AI, another optical company that ended in a multi-billion-dollar acquisition by Marvell, was likewise an interconnect and optical-fabric story, not a pure optical-compute one. The successful outcomes in this field have clustered in moving data with light, not computing with it.
+
+Then there is Luminous Computing, the cautionary tale that rhymes with Neurophos most uncomfortably. Luminous was also backed by Bill Gates. It also raised a roughly $100M+ round on the promise of order-of-magnitude efficiency gains from photonic AI. But its founding team was built primarily from academic and research backgrounds, brilliant optical scientists, rather than from people who had shipped high-volume silicon. Luminous struggled to raise a follow-on round, went through layoffs, and wound down its original ambition. The famous backer did not save it.
+
+That is the whole point. The recurring weakness the industry itself names is not physics, it is manufacturing, yield, and integration talent, the ability to take a working optical result and turn it into a chip that can be produced reliably at volume. The graveyard is full of companies that were science-rich and manufacturing-poor. A famous investor does not fix that gap, Luminous proves it.
+
+Which is exactly why Neurophos's hiring is the most reassuring thing about it. It has the Duke physics, yes, but it has deliberately gone and bought the scarce thing the dead companies lacked: an Intel Xeon yield-and-reliability veteran, a silicon-photonics manufacturing lead, senior VLSI engineering. That does not guarantee Neurophos crosses the valley. It just means, unlike many before it, the company is clearly trying to solve the problem that actually kills optical-computing startups, rather than only the one that wins papers.
+
+## The investor signal
+
+In venture, who is willing to put money in is real information, and Neurophos's syndicate is high quality. Gates Frontier leading, with Microsoft's M12 participating, is not passive capital. Microsoft went further than a check: Marc Tremblay, a Microsoft corporate VP for core AI infrastructure, spoke publicly about the technology, and M12 framed its investment around the company having moved 'from a working proof of concept towards a realistic plan to deliver products on a timeline we can underwrite.'
+
+I treat this as a strong positive without overweighting it, and the graveyard is the reason for the restraint. Luminous had Gates too. Smart money is wrong all the time, and a great syndicate has backed plenty of deep-tech companies that never shipped. But it does tell you the people with the most resources to diligence this technology looked closely and chose to fund it, and one of them is a strategic partner, not just a financial one.
+
+## The risks, and the valley
+
+Every strength above has a shadow. The performance claims are unverified and company-sourced, and they move around. The metasurface details are deliberately withheld, the company says only that it uses standard silicon-foundry materials, which is reassuring for manufacturability but currently unverifiable. The first commercial systems are not expected until 2028, which is years of execution risk in a fast-moving field, and years during which the GPU incumbents are not standing still. There is also a reputational wrinkle: the technology extends earlier work connected to Intellectual Ventures, and IV's co-founder Nathan Myhrvold is an advisor. IV is viewed by many as a patent-litigation operation more than an inventor, which cuts both ways, it may signal a deep patent moat, or it may carry baggage.
+
+And then there is the valley of death itself, the gap between a working demo and a manufacturable product, which has killed essentially every optical-computing company before this one. Neurophos's CEO has said there are 'no more physics miracles in our roadmap, only engineering steps left to get the chip to market.' That single sentence is both the strongest version of the bull case and the clearest statement of the risk. If it is true, the hardest part is behind them. But 'only engineering steps left' is what every deep-tech founder believes, and the valley of death is built entirely out of engineering steps that turned out to be harder than they looked. That is not a dismissal of the claim. The entire bet comes down to whether, this time, with this team and this approach, the engineering actually closes.
+
+## What would have to be true
+
+For this to work, a few specific things have to hold. The efficiency advantage has to survive end-to-end measurement, including conversion overhead, not just shine in the optical core. The metasurface has to manufacture at real production yield on standard foundry tooling, which is exactly why the Intel yield hire matters. The analog precision has to hold across a million elements in real operating conditions. And the 2028 timeline has to roughly hold in a market where the competition is moving fast. None of these are guaranteed. All of them are, at least, the right kind of problem, engineering and execution, rather than unsolved physics, if you believe the founder's claim that the science is done.
+
+## Where I land
+
+This is, if executed, a genuinely remarkable feat of technology, the kind of step-change in compute that the AI buildout actually needs and that silicon alone cannot deliver. At this stage, I would want exposure to it. The reason is not the headline efficiency numbers, which I treat as unproven until measured independently. The reason is the team. The combination of the metasurface science out of Duke, the optical and VLSI veterans from Marvell, Infinera, and Intel, and, tellingly, a senior Intel manufacturing-yield leader brought in this early, is exactly the profile you want in a company whose whole challenge is crossing from demo to product. The investor syndicate, the Microsoft partnership, and the Nature Nanotechnology validation all reinforce that this is a serious effort.
+
+My conviction is contingent. It rests on the demos being real and the efficiency claims surviving independent, end-to-end scrutiny. If those hold, then everything else, the team, the backers, the timeline, the market need, lines up behind one of the more exciting bets in compute. If they do not, this becomes another entry in the long history of optical-computing companies that had brilliant physics and never crossed the valley. At Series A, that is the bet you are making: that this team, more than the ones before it, has what it takes to make the light actually work. Based on who they are and what they have assembled, I would take that bet.

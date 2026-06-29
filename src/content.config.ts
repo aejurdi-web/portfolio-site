@@ -12,6 +12,7 @@ const research = defineCollection({
     rating: z.string().optional(),
     priceTarget: z.string().optional(),
     takeaway: z.string().optional(),
+    order: z.number().optional(),
     draft: z.boolean().default(true),
   }),
 });
@@ -22,6 +23,7 @@ const writing = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
+    order: z.number().optional(),
     draft: z.boolean().default(true),
   }),
 });
@@ -35,6 +37,7 @@ const venture = defineCollection({
     sector: z.string().optional(),
     takeaway: z.string().optional(),
     stage: z.string().optional(),
+    order: z.number().optional(),
     draft: z.boolean().default(true),
   }),
 });

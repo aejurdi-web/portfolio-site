@@ -43,6 +43,26 @@
   }
 }
 
+/* Staggered entrance for index-page cards and list rows. Gated behind
+   no-preference so reduced-motion users never see hidden content. */
+@media (prefers-reduced-motion: no-preference) {
+  .stagger-in {
+    animation: stagger-in 300ms ease-out backwards;
+    animation-delay: calc(var(--stagger-i, 0) * 40ms);
+  }
+}
+
+@keyframes stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Retro terminal mode */
 
 html[data-theme="terminal"] {

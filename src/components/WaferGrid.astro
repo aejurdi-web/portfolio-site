@@ -2,29 +2,46 @@
 // Decorative die grid: an abstract yield map. Foreshadows the real
 // wafer map in the Phase 2 calculator.
 interface Props {
-  class?: string;
-  rows?: number;
-  cols?: number;
+	class?: string;
+	rows?: number;
+	cols?: number;
 }
 
 const { class: className = '', rows = 7, cols = 14 } = Astro.props;
 const total = rows * cols;
 const activeIndices = new Set([
-  3, 17, 18, 19, 24, 32, 33, 38, 47, 48, 49, 52, 61, 62, 66, 76, 80, 90, 91,
+	3, 17, 18, 19, 24, 32, 33, 38, 47, 48, 49, 52, 61, 62, 66, 76, 80, 90, 91,
 ]);
+
+// Each accent cell shimmers on its own long cycle. Periods are randomized
+// per build (60-90s) with random phase so pulses land at irregular
+// intervals: roughly one cell every few seconds across the grid.
+const cells = Array.from({ length: total }).map((_, i) => {
+	const active = activeIndices.has(i);
+	return {
+		active,
+		style: [
+			`--fade-delay: ${i * 12}ms`,
+			active && `--shimmer-dur: ${(60 + Math.random() * 30).toFixed(1)}s`,
+			active && `--shimmer-delay: ${(Math.random() * 75).toFixed(1)}s`,
+		]
+			.filter(Boolean)
+			.join('; '),
+	};
+});
 ---
 
 <div
 	class:list={['grid gap-[3px]', className]}
 	style={`grid-template-columns: repeat(${cols}, minmax(0, 1fr));`}
 >
-	{Array.from({ length: total }).map((_, i) => (
+	{cells.map((cell) => (
 		<div
 			class:list={[
 				'wafer-cell aspect-square rounded-[1px]',
-				activeIndices.has(i) ? 'bg-accent' : 'bg-border',
+				cell.active ? 'wafer-cell-active bg-accent' : 'bg-border',
 			]}
-			style={`animation-delay: ${i * 12}ms`}
+			style={cell.style}
 		/>
 	))}
 </div>
@@ -32,7 +49,15 @@ const activeIndices = new Set([
 <style>
 	.wafer-cell {
 		opacity: 0;
-		animation: wafer-fade 0.4s ease-out forwards;
+		animation: wafer-fade 0.4s ease-out var(--fade-delay, 0s) forwards;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.wafer-cell-active {
+			animation:
+				wafer-fade 0.4s ease-out var(--fade-delay, 0s) forwards,
+				wafer-shimmer var(--shimmer-dur, 75s) ease-in-out var(--shimmer-delay, 0s) infinite;
+		}
 	}
 
 	@keyframes wafer-fade {
@@ -43,6 +68,18 @@ const activeIndices = new Set([
 		to {
 			opacity: 1;
 			transform: scale(1);
+		}
+	}
+
+	/* A ~1.5s brighten-and-dim pulse occupying ~2% of each cell's cycle. */
+	@keyframes wafer-shimmer {
+		0%,
+		2.4%,
+		100% {
+			filter: brightness(1);
+		}
+		1.2% {
+			filter: brightness(1.6);
 		}
 	}
 

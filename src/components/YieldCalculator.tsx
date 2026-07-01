@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import WaferMap from './WaferMap';
 import YieldCurveChart from './YieldCurveChart';
 import { diesPerWafer, yieldFraction, type YieldModel } from '../lib/yieldMath';
@@ -28,6 +28,41 @@ function formatCurrency(value: number) {
 }
 
 const RETICLE_LIMIT_MM2 = 858;
+
+// Tweens toward the latest target over ~200ms so result values count up
+// instead of snapping. Snaps immediately for non-finite endpoints or when
+// the user prefers reduced motion.
+function useTweenedNumber(value: number, duration = 200) {
+	const [display, setDisplay] = useState(value);
+	const displayRef = useRef(value);
+
+	useEffect(() => {
+		const from = displayRef.current;
+		if (
+			!Number.isFinite(from) ||
+			!Number.isFinite(value) ||
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		) {
+			displayRef.current = value;
+			setDisplay(value);
+			return;
+		}
+		let raf = 0;
+		const start = performance.now();
+		const step = (now: number) => {
+			const t = Math.min(1, (now - start) / duration);
+			const eased = 1 - (1 - t) * (1 - t);
+			const next = from + (value - from) * eased;
+			displayRef.current = next;
+			setDisplay(next);
+			if (t < 1) raf = requestAnimationFrame(step);
+		};
+		raf = requestAnimationFrame(step);
+		return () => cancelAnimationFrame(raf);
+	}, [value, duration]);
+
+	return display;
+}
 
 interface SliderFieldProps {
 	label: string;
@@ -92,6 +127,11 @@ export default function YieldCalculator() {
 	const yieldPct = useMemo(() => yieldFraction(model, dieArea, defectDensity), [model, dieArea, defectDensity]);
 	const goodDies = dpw * yieldPct;
 	const costPerGoodDie = goodDies > 0 ? waferCost / goodDies : Infinity;
+
+	const yieldDisplay = useTweenedNumber(yieldPct * 100);
+	const dpwDisplay = useTweenedNumber(dpw);
+	const goodDiesDisplay = useTweenedNumber(goodDies);
+	const costDisplay = useTweenedNumber(costPerGoodDie);
 
 	const monoExceedsReticle = totalLogicArea > RETICLE_LIMIT_MM2;
 	const monoDpw = useMemo(() => diesPerWafer(waferDiameter, totalLogicArea), [waferDiameter, totalLogicArea]);
@@ -230,19 +270,19 @@ export default function YieldCalculator() {
 				<dl className="mt-6 space-y-6">
 					<div className="border-b border-border pb-4">
 						<dt className="font-mono text-xs uppercase tracking-wide text-muted">Yield ({YIELD_MODEL_LABELS[model]})</dt>
-						<dd className="mt-1 font-mono text-3xl text-accent">{(yieldPct * 100).toFixed(1)}%</dd>
+						<dd className="mt-1 font-mono text-3xl text-accent">{yieldDisplay.toFixed(1)}%</dd>
 					</div>
 					<div className="border-b border-border pb-4">
 						<dt className="font-mono text-xs uppercase tracking-wide text-muted">Dies per Wafer</dt>
-						<dd className="mt-1 font-mono text-xl text-ink">{Math.round(dpw).toLocaleString('en-US')}</dd>
+						<dd className="mt-1 font-mono text-xl text-ink">{Math.round(dpwDisplay).toLocaleString('en-US')}</dd>
 					</div>
 					<div className="border-b border-border pb-4">
 						<dt className="font-mono text-xs uppercase tracking-wide text-muted">Good Dies per Wafer</dt>
-						<dd className="mt-1 font-mono text-xl text-ink">{Math.round(goodDies).toLocaleString('en-US')}</dd>
+						<dd className="mt-1 font-mono text-xl text-ink">{Math.round(goodDiesDisplay).toLocaleString('en-US')}</dd>
 					</div>
 					<div>
 						<dt className="font-mono text-xs uppercase tracking-wide text-muted">Cost per Good Die</dt>
-						<dd className="mt-1 font-mono text-xl text-ink">{formatCurrency(costPerGoodDie)}</dd>
+						<dd className="mt-1 font-mono text-xl text-ink">{formatCurrency(costDisplay)}</dd>
 					</div>
 				</dl>
 			</div>

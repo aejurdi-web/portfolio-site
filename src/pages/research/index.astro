@@ -8,10 +8,21 @@ const entries = (await getCollection('research', ({ data }) => !data.draft)).sor
 		(a.data.order ?? Infinity) - (b.data.order ?? Infinity) ||
 		a.id.localeCompare(b.id)
 );
+
+function ratingBadge(rating?: string) {
+	if (!rating) return null;
+	const label = rating.replace(/\s*\(.*\)\s*$/, '').trim();
+	const key = label.toLowerCase();
+	let color = 'var(--color-muted)';
+	if (key.includes('speculative')) color = '#56b6c2';
+	else if (key.includes('buy')) color = 'var(--color-accent)';
+	else if (key.includes('hold') || key.includes('trim')) color = '#c9a35f';
+	return { label, color };
+}
 ---
 
 <Layout title="Adam Jurdi: Research">
-	<section class="mx-auto max-w-3xl px-6 py-20">
+	<section class="mx-auto max-w-5xl px-6 py-20">
 		<p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">Research</p>
 		<h1 class="mt-4 font-display text-4xl font-semibold tracking-tight text-ink">
 			Written equity theses
@@ -27,28 +38,88 @@ const entries = (await getCollection('research', ({ data }) => !data.draft)).sor
 				<p class="mt-2 text-muted">The first thesis is in progress. Check back soon.</p>
 			</div>
 		) : (
-			<div class="mt-12 border-t border-border">
-				{entries.map((entry) => (
-					<a
-						href={`/research/${entry.id}`}
-						class="grid grid-cols-[5rem_1fr_6rem] items-baseline gap-4 border-b border-border py-4 transition-colors hover:bg-ink/[0.03] sm:grid-cols-[5rem_1fr_8rem_6rem]"
-					>
-						<span class="font-mono text-xs text-muted">{entry.data.ticker ?? 'N/A'}</span>
-						<span class="flex flex-wrap items-baseline gap-2">
-							<span class="font-display text-base text-ink">{entry.data.title}</span>
+			<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				{entries.map((entry) => {
+					const badge = ratingBadge(entry.data.rating);
+					return (
+						<a
+							href={`/research/${entry.id}`}
+							class="ticker-card relative flex flex-col rounded-lg border border-border bg-surface p-6"
+						>
 							{entry.data.updated && (
-								<span class="font-mono text-[10px] uppercase tracking-[0.12em] text-accent border border-accent/40 px-1.5 py-px">Updated</span>
+								<span class="absolute right-4 top-4 border border-accent/40 px-1.5 py-px font-mono text-[10px] uppercase tracking-[0.12em] text-accent">
+									Updated
+								</span>
 							)}
-						</span>
-						<span class="hidden font-mono text-xs uppercase tracking-wide text-muted sm:block">
-							{entry.data.sector ?? ''}
-						</span>
-						<span class="font-mono text-xs text-muted">
-							{entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-						</span>
-					</a>
-				))}
+							<span class="font-mono text-4xl font-medium tracking-tight text-ink">
+								{entry.data.ticker ?? 'N/A'}
+							</span>
+							{entry.data.sector && (
+								<span class="mt-3 font-mono text-xs uppercase tracking-wide text-muted">
+									{entry.data.sector}
+								</span>
+							)}
+							{badge && (
+								<span
+									class="mt-2 flex items-center gap-2 font-mono text-[11px] uppercase tracking-wide"
+									style={`color: ${badge.color}`}
+								>
+									<span
+										class="h-1.5 w-1.5 shrink-0 rounded-full"
+										style={`background-color: ${badge.color}`}
+										aria-hidden="true"
+									/>
+									{badge.label}
+								</span>
+							)}
+							<span class="card-reveal mt-6 block border-t border-border pt-4">
+								<span class="block font-display text-sm font-medium leading-snug text-ink">
+									{entry.data.title}
+								</span>
+								<span class="mt-2 block font-mono text-xs text-muted">
+									{entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+								</span>
+							</span>
+						</a>
+					);
+				})}
 			</div>
 		)}
 	</section>
 </Layout>
+
+<style>
+	.ticker-card {
+		transition:
+			transform 200ms ease-out,
+			border-color 200ms ease-out;
+	}
+
+	.ticker-card:focus-visible {
+		border-color: var(--color-accent);
+	}
+
+	.card-reveal {
+		transition: opacity 200ms ease-out;
+	}
+
+	/* Hover reveal only where a hover-capable pointer exists at desktop width;
+	   touch devices at any width keep the title and date visible. */
+	@media (hover: hover) and (min-width: 1024px) {
+		.card-reveal {
+			opacity: 0;
+		}
+
+		.ticker-card:hover,
+		.ticker-card:focus-visible {
+			transform: scale(1.04);
+			border-color: var(--color-accent);
+			z-index: 1;
+		}
+
+		.ticker-card:hover .card-reveal,
+		.ticker-card:focus-visible .card-reveal {
+			opacity: 1;
+		}
+	}
+</style>

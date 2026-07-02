@@ -7,14 +7,22 @@ const links = [
 ---
 
 <footer class="border-t border-border bg-surface">
-	<div
-		class="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-8 font-mono text-xs uppercase tracking-wide text-muted sm:flex-row sm:items-center sm:justify-between"
-	>
-		<p>&copy; {new Date().getFullYear()} Adam Jurdi</p>
-		<nav class="flex gap-6">
-			{links.map((link) => (
-				<a href={link.href} class="transition-colors hover:text-accent">{link.label}</a>
-			))}
-		</nav>
+	<div class="mx-auto max-w-5xl px-6 py-8">
+		<div
+			class="flex flex-col gap-4 font-mono text-xs uppercase tracking-wide text-muted sm:flex-row sm:items-center sm:justify-between"
+		>
+			<p>&copy; {new Date().getFullYear()} Adam Jurdi</p>
+			<nav class="flex gap-6">
+				{links.map((link) => (
+					<a href={link.href} class="transition-colors hover:text-accent">{link.label}</a>
+				))}
+			</nav>
+		</div>
+		<p class="mt-4 max-w-2xl font-mono text-[11px] normal-case leading-relaxed tracking-normal text-muted">
+			The content on this site is my personal research and opinion, for informational and
+			educational purposes only. It is not investment advice, a recommendation, or a
+			solicitation to buy or sell any security. I may hold positions in securities discussed. Do
+			your own research.
+		</p>
 	</div>
 </footer>
